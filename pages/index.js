@@ -7,11 +7,11 @@ export default function Home() {
     <main>
       <Heading>DiceDice</Heading>
       <Subheading>My silly little TTRPG dice helper</Subheading>
-      <Fate/>
+      <Fate />
     </main>
   );
 }
 
 const Subheading = styled.h3`
-text-align: center;
+  text-align: center;
 `;
