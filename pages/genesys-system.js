@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useState, useEffect } from "react";
 
-export default function Fate(){
+export default function Genesys(){
     const [dice, setDice] = useState({yellow: 0, green: 0, blue: 0, red: 0, purple: 0, black: 0})
     const [triumphs, setTriumphs] = useState([])
     const [successes, setSuccesses] = useState([])
@@ -28,117 +28,127 @@ export default function Fate(){
         setFailure([]);
         setDisaster([]);
     }
+
    useEffect(() => {
         console.log(dice);
         console.log("useEffect wurde aktiviert")
         rollResults()
     }, [dice])
+
     function rollResults(){
         if(dice.yellow > 0){
             const yellowDiceRemaining = dice.yellow - 1;
-            const yellowResult = Math.random() * 12;
-            if (yellowResult > 0 && yellowResult < 8){
-                setSuccesses(...successes, {key: successes.length +1, negated: false})
+            const yellowResult = getRandomInteger(1, 13);
+            if (yellowResult > 1 && yellowResult < 9){
+                setSuccesses([...successes, {key: successes.length +1, negated: false}])
             }
-            if (yellowResult > 2 && yellowResult < 5){
-                setSuccesses(...successes, {key: successes.length +1, negated: false})
+            if (yellowResult > 3 && yellowResult < 6){
+                setSuccesses([...successes, {key: successes.length +1, negated: false}])
             }
-            if (yellowResult > 4 && yellowResult < 11){
-                setAdvantage(...advantage, {key: advantage.length +1, negated: false})
+            if (yellowResult > 5 && yellowResult < 12){
+                setAdvantage([...advantage, {key: advantage.length +1, negated: false}])
             }
-            if (yellowResult > 8 && yellowResult < 11){
-                setAdvantage(...advantage, {key: advantage.length +1, negated: false})
+            if (yellowResult > 9 && yellowResult < 12){
+                setAdvantage([...advantage, {key: advantage.length +1, negated: false}])
             }
-            if (yellowResult === 11){
-                setTriumphs(...triumphs, {key: triumphs.length +1, negated: false})
+            if (yellowResult === 12){
+                setTriumphs([...triumphs, {key: triumphs.length +1, negated: false}])
             }
             setDice({...dice, yellow: yellowDiceRemaining});
             return;
         }
         if(dice.green > 0){
             const greenDiceRemaining = dice.green -1;
-            const greenResult = Math.random() * 8;
-            if (greenResult > 0 && greenResult < 5){
-                setSuccesses(...successes, {key: successes.length +1, negated: false})
+            const greenResult = getRandomInteger(1, 9);
+            if (greenResult > 1 && greenResult < 6){
+                setSuccesses([...successes, {key: successes.length +1, negated: false}])
             }
-            if (greenResult === 3){
-                setSuccesses(...successes, {key: successes.length +1, negated: false})
+            if (greenResult === 4){
+                setSuccesses([...successes, {key: successes.length +1, negated: false}])
             }
-            if (greenResult > 3){
-                setAdvantage(...advantage, {key: advantage.length +1, negated: false})
+            if (greenResult > 4){
+                setAdvantage([...advantage, {key: advantage.length +1, negated: false}])
             }
-            if (greenResult === 7){
-                setAdvantage(...advantage, {key: advantage.length +1, negated: false})
+            if (greenResult === 8){
+                setAdvantage([...advantage, {key: advantage.length +1, negated: false}])
             }
             setDice({...dice, green: greenDiceRemaining - 1});
             return;
         }
         if(dice.blue > 0){
             const blueDiceRemaining = dice.blue -1
-            const blueResult = Math.random() * 6
-            if (blueResult > 1 && blueResult < 4){
-                setSuccesses(...successes, {key: successes.length +1, negated: false})
-            }
+            const blueResult = getRandomInteger(1, 7);
             if (blueResult > 2 && blueResult < 5){
-                setAdvantage(...advantage, {key: advantage.length +1, negated: false})
+                setSuccesses([...successes, {key: successes.length +1, negated: false}])
             }
             if (blueResult > 3){
-                setAdvantage(...advantage, {key: advantage.length +1, negated: false})
+                setAdvantage([...advantage, {key: advantage.length +1, negated: false}])
+            }
+            if (blueResult === 5){
+                setAdvantage([...advantage, {key: advantage.length +1, negated: false}])
             }
             setDice({...dice, blue: blueDiceRemaining - 1});
             return;
         }
         if(dice.red > 0){
             const redDiceRemaining = dice.red -1
-            const redResult = Math.random() * 12
-            if (redResult > 0 && redResult < 7){
-                setFailure(...failure, {key: failure.length +1, negated: false})
+            const redResult = getRandomInteger(1, 13)
+            console.log("Würfelergebnis:")
+            console.log(redResult)
+            if (redResult > 1 && redResult < 8){
+                setFailure([...failure, {key: failure.length +1, negated: false}])
             }
-            if (redResult > 2 && redResult < 5){
-                setFailure(...failure, {key: failure.length +1, negated: false})
+            if (redResult > 3 && redResult < 6){
+                setFailure([...failure, {key: failure.length +1, negated: false}])
             }
-            if (redResult > 4 && redResult < 11){
-                setDisadvantage(...disadvantage, {key: disadvantage.length +1, negated: false})
+            if (redResult > 5 && redResult < 12){
+                setDisadvantage([...disadvantage, {key: disadvantage.length +1, negated: false}])
             }
-            if (redResult > 8 && redResult < 11){
-                setDisadvantage(...disadvantage, {key: disadvantage.length +1, negated: false})
+            if (redResult > 9 && redResult < 12){
+                setDisadvantage([...disadvantage, {key: disadvantage.length +1, negated: false}])
             }
-            if (redResult === 11){
-                setDisaster(...disaster, {key: disaster.length +1, negated: false})
+            if (redResult === 12){
+                setDisaster([...disaster, {key: disaster.length +1, negated: false}])
             }
             setDice({...dice, red: redDiceRemaining});
             return;
         }
         if(dice.purple > 0){
             const purpleDiceRemaining = dice.purple -1
-            const purpleResult = Math.random() * 8
-            if (purpleResult > 0 && purpleResult < 4){
-                setFailure(...failure, {key: failure.length +1, negated: false})
+            const purpleResult = getRandomInteger(1, 9)
+            if (purpleResult > 1 && purpleResult < 5){
+                setFailure([...failure, {key: failure.length +1, negated: false}])
             }
-            if (purpleResult === 2){
-                setFailure(...failure, {key: failure.length +1, negated: false})
+            if (purpleResult === 3){
+                setFailure([...failure, {key: failure.length +1, negated: false}])
             }
-            if (purpleResult > 2){
-                setDisadvantage(...disadvantage, {key: disadvantage.length +1, negated: false})
+            if (purpleResult > 3){
+                setDisadvantage([...disadvantage, {key: disadvantage.length +1, negated: false}])
             }
-            if (purpleResult === 7){
-                setDisadvantage(...disadvantage, {key: disadvantage.length +1, negated: false})
+            if (purpleResult === 8){
+                setDisadvantage([...disadvantage, {key: disadvantage.length +1, negated: false}])
             }
             setDice({...dice, purple: purpleDiceRemaining});
             return;
         }
         if(dice.black > 0){
             const blackDiceRemaining = dice.black -1
-            const blackResult = Math.random() * 12
-            if (blackResult > 1 && blackResult < 4){
-                setFailure(...failure, {key: failure.length +1, negated: false})
+            const blackResult = getRandomInteger(1, 7)
+            if (blackResult > 2 && blackResult < 5){
+                setFailure([...failure, {key: failure.length +1, negated: false}])
             }
-            if (blackResult > 3){
-                setDisadvantage(...disadvantage, {key: disadvantage.length +1, negated: false})
+            if (blackResult > 4){
+                setDisadvantage([...disadvantage, {key: disadvantage.length +1, negated: false}])
             }
             setDice({...dice, black: blackDiceRemaining});
             return;
         }
+    }
+
+    function getRandomInteger(min, max){
+        min = Math.ceil(min)
+        max = Math.floor(max)
+        return Math.floor(Math.random() * (max - min) + min)
     }
     return(
         <div>
@@ -200,7 +210,7 @@ export default function Fate(){
             <p>Chanchen</p>
             {advantage.map(result => {
                 return(
-                    <img key={result.key} src="/chanche.png" alt="Andvantage" />
+                    <img key={result.key} src="/chance.png" alt="Andvantage" />
                 )
             })}
         </ResultsRow>
@@ -254,4 +264,6 @@ const ResultsRow = styled.div`
 border-style: solid;
 border-width: 1px;
 border-color: black;
+display: flex;
+flex-direction: row;
 `
