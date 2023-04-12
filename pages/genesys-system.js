@@ -150,6 +150,14 @@ export default function Genesys(){
         max = Math.floor(max)
         return Math.floor(Math.random() * (max - min) + min)
     }
+
+    function neutraliseAdvantageDisadvantage(){
+        const numberOfAdvantages = advantage.length
+        const numberOfDisadvantages = disadvantage.length
+        if (numberOfAdvantages >= numberOfDisadvantages){
+            const canceldAdvantages = numberOfAdvantages.filter()
+        }
+    }
     return(
         <div>
         <StatsEntry onSubmit={rollDice}>
