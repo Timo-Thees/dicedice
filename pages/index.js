@@ -1,6 +1,6 @@
 import Heading from "../components/Heading";
 import styled from "styled-components";
-import Genesys from "./genesys-system";
+import Genesys from "./genesysSystem";
 
 export default function Home() {
   return (

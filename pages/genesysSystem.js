@@ -9,6 +9,8 @@ export default function Genesys(){
     const [disadvantage, setDisadvantage] = useState([])
     const [failure, setFailure] = useState([])
     const [disaster, setDisaster] = useState([])
+    const [successesAndTriumphs, setSuccessesAndTriumphs] = useState()
+    const [failuresAndDisasters, setFailuresAndDisasters] = useState()
 
     const rollDice = (event) =>{
         event.preventDefault();
@@ -19,19 +21,17 @@ export default function Genesys(){
     const purple = (event.target.purple.value === ""? 0 : event.target.purple.value * 1)
     const black = (event.target.black.value === ""? 0 : event.target.black.value * 1)
         setDice({yellow: yellow, green: green, blue: blue, red: red, purple: purple, black: black});
-        console.log(dice);
-        console.log("hiernach müsste use effect aktivieren")
         setTriumphs([]);
         setSuccesses([]);
         setAdvantage([]);
         setDisadvantage([]);
         setFailure([]);
         setDisaster([]);
+        setSuccessesAndTriumphs();
+        setFailuresAndDisasters();
     }
 
    useEffect(() => {
-        console.log(dice);
-        console.log("useEffect wurde aktiviert")
         rollResults()
     }, [dice])
 
@@ -151,13 +151,29 @@ export default function Genesys(){
         return Math.floor(Math.random() * (max - min) + min)
     }
 
-    function neutraliseAdvantageDisadvantage(){
+    function negateAdvantageDisadvantage(){
         const numberOfAdvantages = advantage.length
         const numberOfDisadvantages = disadvantage.length
         if (numberOfAdvantages >= numberOfDisadvantages){
-            const canceldAdvantages = numberOfAdvantages.filter()
+            setAdvantage(advantage.forEach(negateAdvantages));
+            setDisadvantage(disadvantage.forEach(negateAdvantages));
+            function negateAdvantages(value){
+                if(value.key <= numberOfDisadvantages){
+                    return({...value, negated: true})
+                }
+            }
+        } else {
+            setAdvantage(advantage.forEach(negateDisadvantages));
+            setDisadvantage(disadvantage.forEach(negateDisadvantages));
+            function negateDisadvantages(value){
+                if(value.key <= numberOfAdvantages){
+                    return({...value, negated: true})
+                }
+            }
         }
     }
+
+
     return(
         <div>
         <StatsEntry onSubmit={rollDice}>
@@ -193,9 +209,10 @@ export default function Genesys(){
         <ResultsRow>
             <p>Triumphe</p>
             {triumphs.map(result => {
+                if(result.negated === false){
                 return(
                     <img key={result.key} src="/triumph.png" alt="Triumph!" />
-                )
+                )}
             })}
         </ResultsRow>
         <ResultsRow>
