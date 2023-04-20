@@ -9,7 +9,6 @@ export default function Genesys(){
     const [disadvantage, setDisadvantage] = useState([])
     const [failure, setFailure] = useState([])
     const [disaster, setDisaster] = useState([])
-    const [diceResults, setDiceResults] = useState([])
 
     const rollDice = (event) =>{
         event.preventDefault();
@@ -26,7 +25,6 @@ export default function Genesys(){
         setDisadvantage([]);
         setFailure([]);
         setDisaster([]);
-        setDiceResults([]);
     }
 
    useEffect(() => {
@@ -80,7 +78,6 @@ export default function Genesys(){
                 setAdvantage([...advantage, {key: advantage.length +1, negated: false}, {key: advantage.length +2, negated: false}])
             }
             setDice({...dice, green: greenDiceRemaining - 1});
-            setDiceResults([...diceResults, greenResult])
             return;
         }
         if(dice.blue > 0){
@@ -100,7 +97,6 @@ export default function Genesys(){
                 setAdvantage([...advantage, {key: advantage.length +1, negated: false}])
             }
             setDice({...dice, blue: blueDiceRemaining - 1});
-            setDiceResults([...diceResults, blueResult])
             return;
         }
         if(dice.red > 0){
@@ -127,7 +123,6 @@ export default function Genesys(){
                 setFailure([...failure, {key: failure.length +1, negated: false}])
             }
             setDice({...dice, red: redDiceRemaining});
-            setDiceResults([...diceResults, redResult])
             return;
         }
         if(dice.purple > 0){
@@ -150,7 +145,6 @@ export default function Genesys(){
                 setFailure([...failure, {key: failure.length +1, negated: false}])
             }
             setDice({...dice, purple: purpleDiceRemaining});
-            setDiceResults([...diceResults, purpleResult]);
             return;
         }
         if(dice.black > 0){
@@ -163,12 +157,10 @@ export default function Genesys(){
                 setDisadvantage([...disadvantage, {key: disadvantage.length +1, negated: false}])
             }
             setDice({...dice, black: blackDiceRemaining});
-            setDiceResults([...diceResults, blackResult]);
             return;
         }
         negateOpposites(advantage, setAdvantage, disadvantage, setDisadvantage);
         negateOpposites(successes, setSuccesses, failure, setFailure);
-        console.log(successes, failure);
     }
 
     function getRandomInteger(min, max){
@@ -206,12 +198,9 @@ export default function Genesys(){
         setSecondArray([...secondArrayNegated, ...secondArrayNotNegated])
     }
 
-    const showArrays = () => {
-        console.log(successes, failure)
-    }
+    
     return(
         <div>
-            <button onClick={showArrays}>show successes/failures arrays</button>
         <StatsEntry onSubmit={rollDice}>
             <OuterFlexbox>
             <InnerFlexbox>
