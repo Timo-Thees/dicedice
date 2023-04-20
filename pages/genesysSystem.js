@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import { useState, useEffect } from "react";
 
 export default function Genesys(){
@@ -159,8 +159,8 @@ export default function Genesys(){
             setDice({...dice, black: blackDiceRemaining});
             return;
         }
-        negateOpposites(advantage, setAdvantage, disadvantage, setDisadvantage);
-        negateOpposites(successes, setSuccesses, failure, setFailure);
+/*        negateOpposites(advantage, setAdvantage, disadvantage, setDisadvantage);
+        negateOpposites(successes, setSuccesses, failure, setFailure);*/
     }
 
     function getRandomInteger(min, max){
@@ -235,7 +235,9 @@ export default function Genesys(){
             <p>Triumphe</p>
             {triumphs.map(result => {
               {return(
-                    <img key={result.key} src="/triumph.png" alt="Triumph!" />
+                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <img src="/triumph.png" alt="Triumph!" />
+                    </PositiveResult>
                 )}
             })}
         </ResultsRow>
@@ -249,7 +251,9 @@ export default function Genesys(){
                 )
                 } else {
                 return(
-                    <img key={result.key} src="/erfolg.png" alt="Success" />
+                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <img src="/erfolg.png" alt="Success" />
+                    </PositiveResult>
                 )    
                 }
             })}
@@ -264,7 +268,9 @@ export default function Genesys(){
                 )
                 } else {
                 return(
-                    <img key={result.key} src="/misserfolg.png" alt="Failure" />
+                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <img src="/misserfolg.png" alt="Failure" />
+                    </PositiveResult>
                 )    
                 }
             })}
@@ -279,7 +285,9 @@ export default function Genesys(){
                 )
                 } else {
                 return(
-                    <img key={result.key} src="/chance.png" alt="Advantage" />
+                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <img src="/chance.png" alt="Advantage" />
+                    </PositiveResult>
                 )    
                 }
             })}
@@ -294,7 +302,9 @@ export default function Genesys(){
                 )
                 } else {
                 return(
-                    <img key={result.key} src="/bedrohung.png" alt="disadvantae" />
+                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <img src="/bedrohung.png" alt="disadvantae" />
+                    </PositiveResult>
                 )    
                 }
             })}
@@ -303,7 +313,9 @@ export default function Genesys(){
             <p>Katastrophen</p>
             {disaster.map(result => {
                 return(
-                    <img key={result.key} src="/katastrophe.png" alt="Disaster!" />
+                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <img src="/katastrophe.png" alt="Disaster!" />
+                    </PositiveResult>
                 )
             })}
         </ResultsRow>
@@ -344,3 +356,21 @@ border-color: black;
 display: flex;
 flex-direction: row;
 `
+const animatePositiveResult = keyframes`
+from {
+    opacity: 0.0;
+}
+to {
+    opacity: 1;
+}
+`
+const animateNegatedResult = keyframes`
+
+`
+
+const PositiveResult = styled.div`
+animation: ${animatePositiveResult} 0.3s ease-in;
+animation-delay: ${props => (props.animationDelay -1)* 1}s;
+animation-fill-mode: backwards;
+`
+
