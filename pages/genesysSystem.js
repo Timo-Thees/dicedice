@@ -9,6 +9,8 @@ export default function Genesys(){
     const [disadvantage, setDisadvantage] = useState([])
     const [failure, setFailure] = useState([])
     const [disaster, setDisaster] = useState([])
+    const [animationDelaySuccesses, setAnimationDelaySuccesses] = useState(0)
+    const [animationDelayTriumphs, setAnimationDelayTriumphs] = useState(0)
 
     const rollDice = (event) =>{
         event.preventDefault();
@@ -25,6 +27,8 @@ export default function Genesys(){
         setDisadvantage([]);
         setFailure([]);
         setDisaster([]);
+        setAnimationDelaySuccesses(0);
+        setAnimationDelayTriumphs(0);
     }
 
    useEffect(() => {
@@ -159,8 +163,8 @@ export default function Genesys(){
             setDice({...dice, black: blackDiceRemaining});
             return;
         }
-/*        negateOpposites(advantage, setAdvantage, disadvantage, setDisadvantage);
-        negateOpposites(successes, setSuccesses, failure, setFailure);*/
+        negateOpposites(advantage, setAdvantage, disadvantage, setDisadvantage, setAnimationDelaySuccesses);
+        negateOpposites(successes, setSuccesses, failure, setFailure, setAnimationDelayTriumphs);
     }
 
     function getRandomInteger(min, max){
@@ -170,10 +174,11 @@ export default function Genesys(){
     }
 
 
-    function negateOpposites(firstArray, setFirstArray, secondArray, setSecondArray){
+    function negateOpposites(firstArray, setFirstArray, secondArray, setSecondArray, setDelay){
         const compareArrayLength = [firstArray.length, secondArray.length];
         compareArrayLength.sort(function(a, b){return b - a});
         const smallerArray = compareArrayLength.pop();
+        const biggerArray = compareArrayLength.shift()
         let firstArrayNegated = []
         let firstArrayNotNegated = []
         let secondArrayNegated = []
@@ -196,11 +201,17 @@ export default function Genesys(){
         secondArray.map(negateSecondArray);
         setFirstArray([...firstArrayNegated, ...firstArrayNotNegated])
         setSecondArray([...secondArrayNegated, ...secondArrayNotNegated])
+        if (biggerArray > 0){
+            setDelay(biggerArray)
+        }
     }
-
+const showAnimationDelays = ()=>{
+    console.log(animationDelaySuccesses, animationDelayTriumphs)
+}
     
     return(
         <div>
+            <button onClick={showAnimationDelays}>Show animation delays</button>
         <StatsEntry onSubmit={rollDice}>
             <OuterFlexbox>
             <InnerFlexbox>
@@ -235,7 +246,7 @@ export default function Genesys(){
             <p>Triumphe</p>
             {triumphs.map(result => {
               {return(
-                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <PositiveResult animationDelay={result.key} key={result.key} animationDelaySuccesses={animationDelaySuccesses} animationDelayTriumphs={animationDelayTriumphs}>
                     <img src="/triumph.png" alt="Triumph!" />
                     </PositiveResult>
                 )}
@@ -251,7 +262,7 @@ export default function Genesys(){
                 )
                 } else {
                 return(
-                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={animationDelaySuccesses} animationDelayTriumphs="0" key={result.key}>
                     <img src="/erfolg.png" alt="Success" />
                     </PositiveResult>
                 )    
@@ -268,7 +279,7 @@ export default function Genesys(){
                 )
                 } else {
                 return(
-                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={animationDelaySuccesses} animationDelayTriumphs="0" key={result.key}>
                     <img src="/misserfolg.png" alt="Failure" />
                     </PositiveResult>
                 )    
@@ -285,7 +296,7 @@ export default function Genesys(){
                 )
                 } else {
                 return(
-                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={0} animationDelayTriumphs={0} key={result.key}>
                     <img src="/chance.png" alt="Advantage" />
                     </PositiveResult>
                 )    
@@ -302,7 +313,7 @@ export default function Genesys(){
                 )
                 } else {
                 return(
-                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={0} animationDelayTriumphs={0} key={result.key}>
                     <img src="/bedrohung.png" alt="disadvantae" />
                     </PositiveResult>
                 )    
@@ -313,7 +324,7 @@ export default function Genesys(){
             <p>Katastrophen</p>
             {disaster.map(result => {
                 return(
-                    <PositiveResult animationDelay={result.key} key={result.key}>
+                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={animationDelaySuccesses} animationDelayTriumphs={animationDelayTriumphs} key={result.key}>
                     <img src="/katastrophe.png" alt="Disaster!" />
                     </PositiveResult>
                 )
@@ -370,7 +381,7 @@ const animateNegatedResult = keyframes`
 
 const PositiveResult = styled.div`
 animation: ${animatePositiveResult} 0.3s ease-in;
-animation-delay: ${props => (props.animationDelay -1)* 1}s;
+animation-delay: ${props => (props.animationDelay -1)* 1 + props.animationDelaySuccesses + props.animationDelayTriumphs}s;
 animation-fill-mode: backwards;
 `
-
+//
