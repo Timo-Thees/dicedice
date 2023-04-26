@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components"
 import { useState, useEffect } from "react";
+import { diceButtonTextArray } from "../components/diceButtonText";
 
 export default function Genesys(){
     const [dice, setDice] = useState({yellow: 0, green: 0, blue: 0, red: 0, purple: 0, black: 0})
@@ -9,8 +10,13 @@ export default function Genesys(){
     const [disadvantage, setDisadvantage] = useState([])
     const [failure, setFailure] = useState([])
     const [disaster, setDisaster] = useState([])
-    const [animationDelaySuccesses, setAnimationDelaySuccesses] = useState(0)
-    const [animationDelayTriumphs, setAnimationDelayTriumphs] = useState(0)
+    const [animationDelayAdvantages, setAnimationDelayAdvantages] = useState({delayFromNegation: 0, totalDelay: 0})
+    const [animationDelaySuccesses, setAnimationDelaySuccesses] = useState({delayFromNegation: 0, totalDelay: 0})
+    const [diceButtonText, setDiceButtonText] = useState("Klick to roll dice")
+
+    useEffect(() => {
+        rollResults()
+    }, [dice])
 
     const rollDice = (event) =>{
         event.preventDefault();
@@ -27,13 +33,9 @@ export default function Genesys(){
         setDisadvantage([]);
         setFailure([]);
         setDisaster([]);
-        setAnimationDelaySuccesses(0);
-        setAnimationDelayTriumphs(0);
+        setAnimationDelaySuccesses({delayFromNegation: 0, totalDelay: 0});
+        setAnimationDelayAdvantages({delayFromNegation: 0, totalDelay: 0});
     }
-
-   useEffect(() => {
-        rollResults()
-    }, [dice])
 
     function rollResults(){
         if(dice.yellow > 0){
@@ -163,8 +165,9 @@ export default function Genesys(){
             setDice({...dice, black: blackDiceRemaining});
             return;
         }
-        negateOpposites(advantage, setAdvantage, disadvantage, setDisadvantage, setAnimationDelaySuccesses);
-        negateOpposites(successes, setSuccesses, failure, setFailure, setAnimationDelayTriumphs);
+        negateOpposites(advantage, setAdvantage, disadvantage, setDisadvantage, setAnimationDelayAdvantages);
+        negateOpposites(successes, setSuccesses, failure, setFailure, setAnimationDelaySuccesses);
+        changeDiceText();
     }
 
     function getRandomInteger(min, max){
@@ -201,14 +204,20 @@ export default function Genesys(){
         secondArray.map(negateSecondArray);
         setFirstArray([...firstArrayNegated, ...firstArrayNotNegated])
         setSecondArray([...secondArrayNegated, ...secondArrayNotNegated])
-        if (biggerArray > 0){
-            setDelay(biggerArray)
-        }
+        setDelay({delayFromNegation: smallerArray, totalDelay: biggerArray})
     }
-const showAnimationDelays = ()=>{
-    console.log(animationDelaySuccesses, animationDelayTriumphs)
-}
+    const showAnimationDelays = ()=>{
+    console.log(animationDelayAdvantages, animationDelaySuccesses)
+    }
     
+    useEffect(() => {
+        changeDiceText()
+    }, [])
+
+    function changeDiceText(){
+        setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length -1)])
+    }
+
     return(
         <div>
             <button onClick={showAnimationDelays}>Show animation delays</button>
@@ -239,64 +248,32 @@ const showAnimationDelays = ()=>{
             <input type="number" min="0" placeholder="0" name="black"></input>
             </InnerFlexbox>
             </OuterFlexbox>
-            <button type="submit">roll 'em bones!</button>
+            <button type="submit">{diceButtonText}</button>
         </StatsEntry>
         <ResultsContainer>
-        <ResultsRow>
-            <p>Triumphe</p>
-            {triumphs.map(result => {
-              {return(
-                    <PositiveResult animationDelay={result.key} key={result.key} animationDelaySuccesses={animationDelaySuccesses} animationDelayTriumphs={animationDelayTriumphs}>
-                    <img src="/triumph.png" alt="Triumph!" />
-                    </PositiveResult>
-                )}
-            })}
-        </ResultsRow>
-        <ResultsRow>
-            <p>Erfolge</p>
-            {successes.map(result => {
-                if(result.negated === true){
-                return(
-                    <img key={result.key} src="/erfolg-neutralised.png" alt="Success was neutralised" />
-                    
-                )
-                } else {
-                return(
-                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={animationDelaySuccesses} animationDelayTriumphs="0" key={result.key}>
-                    <img src="/erfolg.png" alt="Success" />
-                    </PositiveResult>
-                )    
-                }
-            })}
-        </ResultsRow>
-        <ResultsRow>
-            <p>Misserfolge</p>
-            {failure.map(result => {
-                if(result.negated === true){
-                return(
-                    <img key={result.key} src="/misserfolg-neutralised.png" alt="Failure was neutralised" />
-                    
-                )
-                } else {
-                return(
-                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={animationDelaySuccesses} animationDelayTriumphs="0" key={result.key}>
-                    <img src="/misserfolg.png" alt="Failure" />
-                    </PositiveResult>
-                )    
-                }
-            })}
-        </ResultsRow>
         <ResultsRow>
             <p>Chanchen</p>
             {advantage.map(result => {
                 if(result.negated === true){
                 return(
+                    <NegatedResultsPositive
+                    key={result.key}
+                    animationDelay={result.key}
+                    secondDelay={0}
+                    thirdDelay={0}
+                    >
                     <img key={result.key} src="/chance-neutralised.png" alt="Advantage was neutralised" />
+                    </NegatedResultsPositive>
                     
                 )
                 } else {
                 return(
-                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={0} animationDelayTriumphs={0} key={result.key}>
+                    <PositiveResult 
+                        animationDelay={result.key} 
+                        key={result.key}
+                        secondDelay={animationDelayAdvantages.delayFromNegation}
+                        thirdDelay={0}
+                        >
                     <img src="/chance.png" alt="Advantage" />
                     </PositiveResult>
                 )    
@@ -308,13 +285,77 @@ const showAnimationDelays = ()=>{
             {disadvantage.map(result => {
                 if(result.negated === true){
                 return(
+                    <NegatedResultsNegative
+                    key={result.key}
+                    animationDelay={result.key}
+                    secondDelay={0}
+                    thirdDelay={0}>
                     <img key={result.key} src="/bedrohung-neutralised.png" alt="Disadvantage was neutralised" />
+                    </NegatedResultsNegative>
                     
                 )
                 } else {
                 return(
-                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={0} animationDelayTriumphs={0} key={result.key}>
+                    <PositiveResult 
+                    animationDelay={result.key} 
+                    secondDelay={animationDelayAdvantages.delayFromNegation}
+                    thirdDelay={0}
+                    key={result.key}>
                     <img src="/bedrohung.png" alt="disadvantae" />
+                    </PositiveResult>
+                )    
+                }
+            })}
+        </ResultsRow>
+        <ResultsRow>
+            <p>Erfolge</p>
+            {successes.map(result => {
+                if(result.negated === true){
+                return(
+                    <NegatedResultsPositive
+                    key={result.key}
+                    animationDelay={result.key}
+                    secondDelay={animationDelayAdvantages.totalDelay}
+                    thirdDelay={0}>
+                    <img src="/erfolg-neutralised.png" alt="Success was neutralised" />
+                    </NegatedResultsPositive>
+                    
+                )
+                } else {
+                return(
+                    <PositiveResult 
+                    animationDelay={result.key} 
+                    key={result.key}
+                    secondDelay={animationDelayAdvantages.totalDelay}
+                    thirdDelay={animationDelaySuccesses.delayFromNegation}>
+                    <img src="/erfolg.png" alt="Success" />
+                    </PositiveResult>
+                )    
+                }
+            })}
+        </ResultsRow>
+        <ResultsRow>
+            <p>Misserfolge</p>
+            {failure.map(result => {
+                if(result.negated === true){
+                return(
+                    <NegatedResultsNegative
+                    key={result.key}
+                    animationDelay={result.key}
+                    secondDelay={animationDelayAdvantages.totalDelay}
+                    thirdDelay={0}>
+                    <img src="/misserfolg-neutralised.png" alt="Failure was neutralised" />
+                    </NegatedResultsNegative>
+                    
+                )
+                } else {
+                return(
+                    <PositiveResult 
+                    animationDelay={result.key} 
+                     key={result.key}
+                     secondDelay={animationDelayAdvantages.totalDelay}
+                     thirdDelay={animationDelaySuccesses.delayFromNegation}>
+                    <img src="/misserfolg.png" alt="Failure" />
                     </PositiveResult>
                 )    
                 }
@@ -324,10 +365,26 @@ const showAnimationDelays = ()=>{
             <p>Katastrophen</p>
             {disaster.map(result => {
                 return(
-                    <PositiveResult animationDelay={result.key} animationDelaySuccesses={animationDelaySuccesses} animationDelayTriumphs={animationDelayTriumphs} key={result.key}>
+                    <PositiveResult 
+                    animationDelay={result.key} key={result.key}
+                    secondDelay={animationDelayAdvantages.totalDelay}
+                    thirdDelay={animationDelaySuccesses.totalDelay}
+                    >
                     <img src="/katastrophe.png" alt="Disaster!" />
                     </PositiveResult>
                 )
+            })}
+        </ResultsRow>
+        <ResultsRow>
+            <p>Triumphe</p>
+            {triumphs.map(result => {
+              {return(
+                    <PositiveResult animationDelay={result.key} key={result.key} 
+                    secondDelay={animationDelayAdvantages.totalDelay}
+                    thirdDelay={animationDelaySuccesses.totalDelay + disaster.length} >
+                    <img src="/triumph.png" alt="Triumph!" />
+                    </PositiveResult>
+                )}
             })}
         </ResultsRow>
         </ResultsContainer>
@@ -375,13 +432,21 @@ to {
     opacity: 1;
 }
 `
-const animateNegatedResult = keyframes`
-
-`
 
 const PositiveResult = styled.div`
 animation: ${animatePositiveResult} 0.3s ease-in;
-animation-delay: ${props => (props.animationDelay -1)* 1 + props.animationDelaySuccesses + props.animationDelayTriumphs}s;
+animation-delay: (${props => (props.animationDelay -1)* 1 + props.secondDelay + props.thirdDelay})s;
 animation-fill-mode: backwards;
 `
+const NegatedResultsPositive = styled.div`
+animation: ${animatePositiveResult} 0.3s ease-in;
+animation-delay: ${props => (props.animationDelay -1)* 1 + props.secondDelay + props.thirdDelay}s;
+animation-fill-mode: backwards;
+`
+const NegatedResultsNegative = styled.div`
+animation: ${animatePositiveResult} 0.3s ease-in;
+animation-delay: ${props => (props.animationDelay -1)* 1 + 0.5 + props.secondDelay + props.thirdDelay}s;
+animation-fill-mode: backwards;
+`
+
 //
