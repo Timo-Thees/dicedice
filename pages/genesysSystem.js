@@ -33,8 +33,8 @@ export default function Genesys(){
         setDisadvantage([]);
         setFailure([]);
         setDisaster([]);
-        setAnimationDelaySuccesses({delayFromNegation: 0, totalDelay: 0});
-        setAnimationDelayAdvantages({delayFromNegation: 0, totalDelay: 0});
+        setAnimationDelaySuccesses(0);
+        setAnimationDelayAdvantages(0);
     }
 
     function rollResults(){
@@ -204,12 +204,9 @@ export default function Genesys(){
         secondArray.map(negateSecondArray);
         setFirstArray([...firstArrayNegated, ...firstArrayNotNegated])
         setSecondArray([...secondArrayNegated, ...secondArrayNotNegated])
-        setDelay({delayFromNegation: smallerArray, totalDelay: biggerArray})
+        setDelay(biggerArray)
     }
 
-
-
-    
     useEffect(() => {
         changeDiceText()
     }, [])
@@ -217,9 +214,6 @@ export default function Genesys(){
     function changeDiceText(){
         setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length -1)])
     }
-    const showAnimationDelays = ()=>{
-        console.log(animationDelayAdvantages, animationDelaySuccesses)
-        }
 
     return(
         <div>
@@ -252,7 +246,6 @@ export default function Genesys(){
             </OuterFlexbox>
             <button type="submit">{diceButtonText}</button>
         </StatsEntry>
-        <button onClick={showAnimationDelays}>Show animation delays</button>
         <ResultsContainer>
         <ResultsRow>
             <p>Chanchen</p>
@@ -271,9 +264,9 @@ export default function Genesys(){
                 } else {
                 return(
                     <ShowResults 
-                        animationDelay={result.key} 
                         key={result.key}
-                        secondDelay={animationDelayAdvantages.delayFromNegation * 1}
+                        animationDelay={result.key} 
+                        secondDelay={0}
                         >
                     <img src="/chance.png" alt="Advantage" />
                     </ShowResults>
@@ -297,9 +290,9 @@ export default function Genesys(){
                 } else {
                 return(
                     <ShowResults 
+                    key={result.key}
                     animationDelay={result.key} 
-                    secondDelay={animationDelayAdvantages.delayFromNegation * 1}
-                    key={result.key}>
+                    secondDelay={0}>
                     <img src="/bedrohung.png" alt="disadvantae" />
                     </ShowResults>
                 )    
@@ -314,7 +307,7 @@ export default function Genesys(){
                     <ShowResults
                     key={result.key}
                     animationDelay={result.key}
-                    secondDelay={animationDelayAdvantages.totalDelay + 1}>
+                    secondDelay={animationDelayAdvantages + 1}>
                     <img src="/erfolg-neutralised.png" alt="Success was neutralised" />
                     </ShowResults>
                     
@@ -322,9 +315,9 @@ export default function Genesys(){
                 } else {
                 return(
                     <ShowResults 
-                    animationDelay={result.key} 
                     key={result.key}
-                    secondDelay={(animationDelayAdvantages.totalDelay + animationDelaySuccesses.delayFromNegation)*1 + 1}>
+                    animationDelay={result.key}
+                    secondDelay={animationDelayAdvantages + 1}>
                     <img src="/erfolg.png" alt="Success" />
                     </ShowResults>
                 )    
@@ -339,7 +332,7 @@ export default function Genesys(){
                     <ShowResults
                     key={result.key}
                     animationDelay={result.key}
-                    secondDelay={animationDelayAdvantages.totalDelay + 1.3}>
+                    secondDelay={animationDelayAdvantages + 1.3}>
                     <img src="/misserfolg-neutralised.png" alt="Failure was neutralised" />
                     </ShowResults>
                     
@@ -347,9 +340,9 @@ export default function Genesys(){
                 } else {
                 return(
                     <ShowResults 
+                    key={result.key}
                     animationDelay={result.key} 
-                     key={result.key}
-                     secondDelay={(animationDelayAdvantages.totalDelay + animationDelaySuccesses.delayFromNegation)*1 +1 }>
+                     secondDelay={animationDelayAdvantages +1 }>
                     <img src="/misserfolg.png" alt="Failure" />
                     </ShowResults>
                 )    
@@ -361,8 +354,9 @@ export default function Genesys(){
             {disaster.map(result => {
                 return(
                     <ShowResults 
-                    animationDelay={result.key} key={result.key}
-                    secondDelay={animationDelayAdvantages.totalDelay + animationDelaySuccesses.totalDelay +2}
+                    key={result.key}
+                    animationDelay={result.key} 
+                    secondDelay={animationDelayAdvantages + animationDelaySuccesses +2}
                     >
                     <img src="/katastrophe.png" alt="Disaster!" />
                     </ShowResults>
@@ -374,7 +368,7 @@ export default function Genesys(){
             {triumphs.map(result => {
               {return(
                     <ShowResults animationDelay={result.key} key={result.key} 
-                    secondDelay={animationDelayAdvantages.totalDelay + animationDelaySuccesses.totalDelay + disaster.length +2}>
+                    secondDelay={animationDelayAdvantages + animationDelaySuccesses + disaster.length +2}>
                     <img src="/triumph.png" alt="Triumph!" />
                     </ShowResults>
                 )}
