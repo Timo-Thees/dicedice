@@ -16,8 +16,7 @@ export default function Genesys({setPage}){
     const [animationDelaySuccesses, setAnimationDelaySuccesses] = useState(0)
     const [diceButtonText, setDiceButtonText] = useState("Klick to roll dice")
     const [resultOverlay, setResultOverlay] = useState(false)
-    
-    const iconReference = useRef(null);
+
 
     useEffect(() => {
         rollResults(dice, setDice, advantage, setAdvantage, disadvantage, setDisadvantage, setAnimationDelayAdvantages, successes, setSuccesses, failure, setFailure, triumphs, setTriumphs, disaster, setDisaster, setAnimationDelaySuccesses, getRandomInteger)
