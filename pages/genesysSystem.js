@@ -2,8 +2,9 @@ import styled, { keyframes } from "styled-components"
 import { useState, useEffect, useRef } from "react";
 import { diceButtonTextArray } from "../components/diceButtonText";
 import {rollResults} from "../components/rollResults";
+import { DiceResultsOverlay } from "./diceResults";
 
-export default function Genesys(){
+export default function Genesys({setPage}){
     const [dice, setDice] = useState({yellow: 0, green: 0, blue: 0, red: 0, purple: 0, black: 0})
     const [triumphs, setTriumphs] = useState([])
     const [successes, setSuccesses] = useState([])
@@ -14,11 +15,12 @@ export default function Genesys(){
     const [animationDelayAdvantages, setAnimationDelayAdvantages] = useState(0)
     const [animationDelaySuccesses, setAnimationDelaySuccesses] = useState(0)
     const [diceButtonText, setDiceButtonText] = useState("Klick to roll dice")
+    const [resultOverlay, setResultOverlay] = useState(false)
     
     const iconReference = useRef(null);
 
     useEffect(() => {
-        rollResults(dice, advantage, setAdvantage, disadvantage, setDisadvantage, setAnimationDelayAdvantages, successes, setSuccesses, failure, setFailure, setAnimationDelaySuccesses)
+        rollResults(dice, setDice, advantage, setAdvantage, disadvantage, setDisadvantage, setAnimationDelayAdvantages, successes, setSuccesses, failure, setFailure, triumphs, setTriumphs, disaster, setDisaster, setAnimationDelaySuccesses, getRandomInteger)
     }, [dice])
 
     const rollDice = (event) =>{
@@ -39,6 +41,7 @@ export default function Genesys(){
         setAnimationDelaySuccesses(0);
         setAnimationDelayAdvantages(0);
         changeDiceText();
+        setResultOverlay(true);
     }
 
     function getRandomInteger(min, max){
@@ -52,11 +55,16 @@ export default function Genesys(){
     }, [])
 
     function changeDiceText(){
-        setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length -1)])
+        setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length)])
     }
 
     return(
         <div>
+            {/*if(resultOverlay === true){
+                return( <DiceResults
+                
+                />)}       
+                */}
         <StatsEntry onSubmit={rollDice}>
             <OuterFlexbox>
             <InnerFlexbox>
@@ -86,6 +94,7 @@ export default function Genesys(){
             </OuterFlexbox>
             <button type="submit">{diceButtonText}</button>
         </StatsEntry>
+        <button onClick={()=>setPage("home")}>Home</button>
         <ResultsContainer>
         <ResultsRow>
             <p>Chanchen</p>

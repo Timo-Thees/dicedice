@@ -1,4 +1,4 @@
-export function rollResults(dice, advantage, setAdvantage, disadvantage, setDisadvantage, setAnimationDelayAdvantages, successes, setSuccesses, failure, setFailure, setAnimationDelaySuccesses){
+export function rollResults(dice, setDice, advantage, setAdvantage, disadvantage, setDisadvantage, setAnimationDelayAdvantages, successes, setSuccesses, failure, setFailure, triumphs, setTriumphs, disaster, setDisaster, setAnimationDelaySuccesses, getRandomInteger){
     if(dice.yellow > 0){
         const yellowDiceRemaining = dice.yellow - 1;
         const yellowResult = getRandomInteger(1, 13);

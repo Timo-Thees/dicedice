@@ -21,5 +21,12 @@ export const diceButtonTextArray = [
     "Well, good luck!",
     "Sweet baby RNGesus!",
     "Thats a lota dice",
-    "I like those odds"
+    "I like those odds", 
+    "May the odds ever be in your favor",
+    "This is gonna sting",
+    "What could possibly go wrong?",
+    "Whats the worst that could happen?",
+    "*chuckles* I'm in danger!",
+    "*nervous chuckle*",
+    "Oh. Oh no."
 ]
