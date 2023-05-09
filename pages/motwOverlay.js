@@ -2,11 +2,15 @@ import Heading from "../components/Heading";
 import styled from "styled-components";
 import { monsterOfTheWeekMoveList } from "../components/monsterOfTheWeekMovelist";
 
-export function MonsterOfTheWeekResultOverlay({diceResult, setResultOverlay}){
-    const selectedMove = monsterOfTheWeekMoveList.map(move =>{if(move.key === diceResult.selectedMove){return({...move})}})
+export function MonsterOfTheWeekResultOverlay({diceResult, setResultOverlay, setSelectMove}){
+    const selectedMove = monsterOfTheWeekMoveList[diceResult.selectedMove]
     const totalResult = diceResult.firstDice + diceResult.secondDice + diceResult.modifier
-    const tooltipText = ()=>{
-        if(totalResult <= 6 && selectedMove.onFail === "Standart"){
+    function getTooltipText(){
+        if(selectedMove === undefined){
+            return(
+                "You selected no move. What was this supposed to be?" 
+            )
+        } else if(totalResult <= 6 && selectedMove.onFail === "Standart"){
             return(
                 "Failure. Mark expirience and accept the consequences"
             )
@@ -34,15 +38,19 @@ export function MonsterOfTheWeekResultOverlay({diceResult, setResultOverlay}){
         }
            
     }
+    const tooltipText = getTooltipText()
+    const closeOverlay = ()=>{
+        setResultOverlay(false);
+    }
     return(
         <Overlay>
             <Dialog>
                 <Heading>{totalResult}</Heading>
                 <h2>firstDice: {diceResult.firstDice}, secondDice: {diceResult.secondDice}, modifier: {diceResult.modifier}</h2>
                 <h3>is Advanced: {diceResult.isAdvanced.toString()}</h3>
-                <a>here is the text: {tooltipText}</a>
-                <button onClick={() => setResultOverlay(false)}>ok enough of that</button>
-                <button onClick={()=> console.log(selectedMove)}>What is in selectedMove?</button>
+                <a>{tooltipText}</a>
+                <button>Show total text</button>
+                <button onClick={closeOverlay}>done</button>
             </Dialog>
         </Overlay>
     )

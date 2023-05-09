@@ -8,7 +8,7 @@ import {MonsterOfTheWeekResultOverlay} from "./motwOverlay"
 export default function MonsterOfTheWeek({setPage}){
     const [diceButtonText, setDiceButtonText] = useState("Klick to roll dice")
     const [resultOverlay, setResultOverlay] = useState(false)
-    const [selectMove, setSelectMove] = useState()
+    const [selectMove, setSelectMove] = useState(false)
     const [diceResult, setDiceResult] = useState()
     const [isAdvanced, setIsAdvanced] = useState(false)
 
@@ -23,7 +23,10 @@ export default function MonsterOfTheWeek({setPage}){
     }
 
     useEffect(() => {
-        changeDiceText()
+        function initiateDiceText(){
+            setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length)])
+        }
+        initiateDiceText()
     }, [])
 
     const handleRollDice = () =>{
@@ -38,7 +41,7 @@ export default function MonsterOfTheWeek({setPage}){
     return(
         <div>
             {resultOverlay === true ? (
-            <MonsterOfTheWeekResultOverlay diceResult={diceResult} setResultOverlay={setResultOverlay}/>
+            <MonsterOfTheWeekResultOverlay diceResult={diceResult} setResultOverlay={setResultOverlay} setSelectMove={setSelectMove}/>
 ) : (<></>)
             }
             <Heading>Monster of the Week</Heading>
@@ -47,7 +50,6 @@ export default function MonsterOfTheWeek({setPage}){
                 <input type="number" min="-2" max="4" placeholder="0" id="modifier"></input>
                 <input type="checkbox" id="advanced" onChange={()=>setIsAdvanced(!isAdvanced)}></input>
                 <label for="advanced">This move is advanced</label>
-                <p>is this move advanced? {isAdvanced.toString()}</p>
                 <button onClick={handleRollDice}>{diceButtonText}</button>
                 <h4>Select your move</h4>
                 <OuterFlexbox>
@@ -58,7 +60,7 @@ export default function MonsterOfTheWeek({setPage}){
                                     <input type="radio" id={move.name} name="move" value={move.key} onChange={()=>setSelectMove(move.key)}/>
                                     <label htmlFor={move.name}>{move.name}</label>
                                     <p>{move.tooltip}</p><br/>
-                                    <p>"Atribut: "{move.rollWith}</p>
+                                    <p>Atribut: {move.rollWith}</p>
                                 </OuterFlexbox>
                             )
                         })}
