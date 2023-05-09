@@ -1,8 +1,9 @@
 import styled, { keyframes } from "styled-components"
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { diceButtonTextArray } from "../components/diceButtonText";
 import {rollResults} from "../components/rollResults";
 import { DiceResultsOverlay } from "./diceResults";
+import Image from "next/Image";
 
 export default function Genesys({setPage}){
     const [dice, setDice] = useState({yellow: 0, green: 0, blue: 0, red: 0, purple: 0, black: 0})
@@ -16,12 +17,17 @@ export default function Genesys({setPage}){
     const [animationDelaySuccesses, setAnimationDelaySuccesses] = useState(0)
     const [diceButtonText, setDiceButtonText] = useState("Klick to roll dice")
     const [resultOverlay, setResultOverlay] = useState(false)
-    
-    const iconReference = useRef(null);
+
+    const shutUpLinter = useCallback(()=> {
+        return(
+            [advantage, disadvantage, successes, failure, triumphs, disaster]
+        )
+    },[advantage, disadvantage, successes, failure, triumphs, disaster])
 
     useEffect(() => {
+        const [advantage, disadvantage, successes, failure, triumphs, disaster] = shutUpLinter();
         rollResults(dice, setDice, advantage, setAdvantage, disadvantage, setDisadvantage, setAnimationDelayAdvantages, successes, setSuccesses, failure, setFailure, triumphs, setTriumphs, disaster, setDisaster, setAnimationDelaySuccesses, getRandomInteger)
-    }, [dice])
+    },  [dice, shutUpLinter])
 
     const rollDice = (event) =>{
         event.preventDefault();
@@ -50,13 +56,21 @@ export default function Genesys({setPage}){
         return Math.floor(Math.random() * (max - min) + min)
     }
 
+ /*   const srslyShutUpLinter = useCallback(()=>{
+        return(changeDiceText())
+    }, [changeDiceText])*/
+
     useEffect(() => {
-        changeDiceText()
+        function initiateDiceText(){
+            setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length)])
+        }
+        initiateDiceText()
     }, [])
 
     function changeDiceText(){
         setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length)])
     }
+
 
     return(
         <div>
@@ -69,25 +83,25 @@ export default function Genesys({setPage}){
             <OuterFlexbox>
             <InnerFlexbox>
             <h4>boni</h4>
-            <img src="/yellow_dice.png" alt="yellow d12"/>
+            <FUImage width={30} src="/yellow_dice.png" alt="yellow d12"/>
             <p>Gelb</p>
             <input type="number" min="0" placeholder="0" name="yellow"></input>
-            <img src="/green_dice.png" alt="green d8"/>
+            <FUImage width={25} src="/green_dice.png" alt="green d8"/>
             <p>Grün</p>
             <input type="number" min="0" placeholder="0" name="green"></input>
-            <img src="/blue_dice.png" alt="blue d6"/>
+            <FUImage width={25} src="/blue_dice.png" alt="blue d6"/>
             <p>Blau</p>
             <input type="number" min="0" placeholder="0" name="blue"></input>
             </InnerFlexbox>
             <InnerFlexbox>
             <h4>mali</h4>
-            <img src="/red_dice.png" alt="red d12"/>
+            <FUImage width={30} src="/red_dice.png" alt="red d12"/>
             <p>Rot</p>
             <input type="number" min="0" placeholder="0" name="red"></input>
-            <img src="/purple_dice.png" alt="purple d8"/>
+            <FUImage width={25} src="/purple_dice.png" alt="purple d8"/>
             <p>Lila</p>
             <input type="number" min="0" placeholder="0" name="purple"></input>
-            <img src="/black_dice.png" alt="black d6"/>
+            <FUImage width={25} src="/black_dice.png" alt="black d6"/>
             <p>Schwarz</p>
             <input type="number" min="0" placeholder="0" name="black"></input>
             </InnerFlexbox>
@@ -105,7 +119,6 @@ export default function Genesys({setPage}){
                     key={result.key}
                     animationDelay={result.key}
                     secondDelay={0}
-                    ref={iconReference}
                     >
                         <NormalIcon src="/chance.png"/>
                         <NegatedIcon animationDelay={result.key} secondDelay={0} src="/chance-neutralised.png" alt="Advantage was neutralised" />
@@ -118,7 +131,6 @@ export default function Genesys({setPage}){
                         key={result.key}
                         animationDelay={result.key} 
                         secondDelay={0}
-                        ref={iconReference}
                         >
                          <NormalIcon src="/chance.png" alt="Advantage" />
                     </ShowResults>
@@ -135,7 +147,7 @@ export default function Genesys({setPage}){
                     key={result.key}
                     animationDelay={result.key}
                     secondDelay={0.3}>
-                    <img key={result.key} src="/bedrohung-neutralised.png" alt="Disadvantage was neutralised" />
+                    <FUImage width={25} key={result.key} src="/bedrohung-neutralised.png" alt="Disadvantage was neutralised" />
                     </ShowResults>
                     
                 )
@@ -145,7 +157,7 @@ export default function Genesys({setPage}){
                     key={result.key}
                     animationDelay={result.key} 
                     secondDelay={0}>
-                    <img src="/bedrohung.png" alt="disadvantae" />
+                    <FUImage width={25} src="/bedrohung.png" alt="disadvantae" />
                     </ShowResults>
                 )    
                 }
@@ -160,7 +172,7 @@ export default function Genesys({setPage}){
                     key={result.key}
                     animationDelay={result.key}
                     secondDelay={animationDelayAdvantages + 1}>
-                    <img src="/erfolg-neutralised.png" alt="Success was neutralised" />
+                    <FUImage width={25} src="/erfolg-neutralised.png" alt="Success was neutralised" />
                     </ShowResults>
                     
                 )
@@ -170,7 +182,7 @@ export default function Genesys({setPage}){
                     key={result.key}
                     animationDelay={result.key}
                     secondDelay={animationDelayAdvantages + 1}>
-                    <img src="/erfolg.png" alt="Success" />
+                    <FUImage width={25} src="/erfolg.png" alt="Success" />
                     </ShowResults>
                 )    
                 }
@@ -185,7 +197,7 @@ export default function Genesys({setPage}){
                     key={result.key}
                     animationDelay={result.key}
                     secondDelay={animationDelayAdvantages + 1.3}>
-                    <img src="/misserfolg-neutralised.png" alt="Failure was neutralised" />
+                    <FUImage width={25} src="/misserfolg-neutralised.png" alt="Failure was neutralised" />
                     </ShowResults>
                     
                 )
@@ -195,7 +207,7 @@ export default function Genesys({setPage}){
                     key={result.key}
                     animationDelay={result.key} 
                      secondDelay={animationDelayAdvantages +1 }>
-                    <img src="/misserfolg.png" alt="Failure" />
+                    <FUImage width={25} src="/misserfolg.png" alt="Failure" />
                     </ShowResults>
                 )    
                 }
@@ -210,7 +222,7 @@ export default function Genesys({setPage}){
                     animationDelay={result.key} 
                     secondDelay={animationDelayAdvantages + animationDelaySuccesses +2}
                     >
-                    <img src="/katastrophe.png" alt="Disaster!" />
+                    <FUImage width={30} src="/katastrophe.png" alt="Disaster!" />
                     </ShowResults>
                 )
             })}
@@ -221,7 +233,7 @@ export default function Genesys({setPage}){
               {return(
                     <ShowResults animationDelay={result.key} key={result.key} 
                     secondDelay={animationDelayAdvantages + animationDelaySuccesses + disaster.length +2}>
-                    <img src="/triumph.png" alt="Triumph!" />
+                    <FUImage width={30} src="/triumph.png" alt="Triumph!" />
                     </ShowResults>
                 )}
             })}
@@ -288,10 +300,13 @@ const NegatedIcon = styled(NormalIcon)`
 position: relative;
 left: -25px;
 top: 0px;
-z-index: 2;
+z-index: -2;
 animation: animation: ${animatePositiveResult} 1s ease-in;
 animation-delay: ${props => (props.animationDelay -1)* 1 + props.secondDelay + 10}s;
 animation-fill-mode: backwards;
+`
+const FUImage = styled.img`
+max-widh: 30px;
 `
 
 //
