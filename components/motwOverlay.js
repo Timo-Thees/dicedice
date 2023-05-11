@@ -1,12 +1,12 @@
-import Heading from "../components/Heading";
+import Heading from "./Heading";
 import styled from "styled-components";
-import { monsterOfTheWeekMoveList } from "../components/monsterOfTheWeekMovelist";
+import { monsterOfTheWeekMoveList } from "./monsterOfTheWeekMovelist";
 
-export default function MonsterOfTheWeekResultOverlay({diceResult, setResultOverlay, setSelectMove}){
-    const selectedMove = monsterOfTheWeekMoveList[diceResult.selectedMove]
+export default function MonsterOfTheWeekResultOverlay({diceResult, setResultOverlay}){
+    const selectedMove = (monsterOfTheWeekMoveList[diceResult.selectedMove]===undefined?false:monsterOfTheWeekMoveList[diceResult.selectedMove])
     const totalResult = diceResult.firstDice + diceResult.secondDice + diceResult.modifier
     function getTooltipText(){
-        if(selectedMove === undefined){
+        if(selectedMove === false){
             return(
                 "You selected no move. What was this supposed to be?" 
             )
