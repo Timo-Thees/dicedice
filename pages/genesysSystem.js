@@ -2,8 +2,7 @@ import styled, { keyframes } from "styled-components"
 import { useState, useEffect, useCallback } from "react";
 import { diceButtonTextArray } from "../components/diceButtonText";
 import {rollResults} from "../components/rollResults";
-import { DiceResultsOverlay } from "./diceResults";
-import Image from "next/image"
+import DiceResultsOverlay from "./diceResults";
 
 export default function Genesys({setPage}){
     const [dice, setDice] = useState({yellow: 0, green: 0, blue: 0, red: 0, purple: 0, black: 0})

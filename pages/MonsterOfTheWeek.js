@@ -3,7 +3,7 @@ import {InnerFlexbox, OuterFlexbox, StatsEntry} from "../components/design"
 import { useState, useEffect } from "react";
 import { diceButtonTextArray } from "../components/diceButtonText";
 import { monsterOfTheWeekMoveList } from "../components/monsterOfTheWeekMovelist";
-import {MonsterOfTheWeekResultOverlay} from "./motwOverlay"
+import MonsterOfTheWeekResultOverlay from "./motwOverlay"
 
 export default function MonsterOfTheWeek({setPage}){
     const [diceButtonText, setDiceButtonText] = useState("Klick to roll dice")

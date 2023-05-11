@@ -2,7 +2,7 @@ import Heading from "../components/Heading";
 import styled from "styled-components";
 import { monsterOfTheWeekMoveList } from "../components/monsterOfTheWeekMovelist";
 
-export function MonsterOfTheWeekResultOverlay({diceResult, setResultOverlay, setSelectMove}){
+export default function MonsterOfTheWeekResultOverlay({diceResult, setResultOverlay, setSelectMove}){
     const selectedMove = monsterOfTheWeekMoveList[diceResult.selectedMove]
     const totalResult = diceResult.firstDice + diceResult.secondDice + diceResult.modifier
     function getTooltipText(){

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export function DiceResultsOverlay({
+export default function DiceResultsOverlay({
     advantage, disadvantage, successes, failure, triumphs, disaster, setResultOverlay})
     { 
     const closeOverlay =()=> {
