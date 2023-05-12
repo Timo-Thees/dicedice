@@ -11,7 +11,7 @@ export default function Home() {
     <main>
       <Background>
       {page === "home" ? (      
-        <div>
+        <BackgroundHomescreen>
           <LogoBox>      
             <Logo src="/dicedice_logo.png"/>
             <LogoGlow></LogoGlow>
@@ -23,7 +23,7 @@ export default function Home() {
       <button onClick={()=> setPage("oracle")}>Orakel</button>
       <button onClick={()=> setPage("under construction")}>NPC Generator</button>
       <button onClick={()=> setPage("under construction")}>Dungeon Generator</button>
-      </div>) :(<></>)}
+      </BackgroundHomescreen>) :(<></>)}
       {page === "genesys" ? (<Genesys setPage={setPage}/>) : (<></>)}
       {page === "oracle" ? (<Oracle setPage={setPage}/>):(<></>)}
       {page === "monster of the week" ? (<MonsterOfTheWeek setPage={setPage}/>):(<></>)}
@@ -47,6 +47,15 @@ export const Subheading = styled.h3`
 const Background = styled.div`
 background-color: #28304B;
 height: 100%;
+top: 0px;
+right: 0px;
+bottom: 0px;
+left: 0px;
+width: 100%;
+`
+const BackgroundHomescreen = styled.div`
+background-color: #28304B;
+height: 100%;
 position: fixed;
 top: 0px;
 right: 0px;
@@ -54,6 +63,7 @@ bottom: 0px;
 left: 0px;
 width: 100%;
 display: flex;
+flex-direction: column;
 align-items: center;
 align-content: center;
 justify-content: center;
@@ -69,6 +79,7 @@ to {
 `
 
 const Logo = styled.img`
+position: absolute;
 align-self: center;
 animation: ${animateLogo} 2s ease-in;
 animation-fill-mode: backwards;
@@ -76,19 +87,21 @@ z-index: 2;
 object-position: 50% 50%;
 `
 const LogoGlow = styled.div`
-width: 10px;
-hight: 10px;
-animation: ${animateLogo} 2s ease-in;
+position: absolute;
+width: 160px;
+height: 30px;
+animation: ${animateLogo} 0.8s ease-in;
+animation-delay: 1.5s;
 animation-fill-mode: backwards;
-box-shadow: 0px 0px 20px 20px white;
+background-color: white;
+box-shadow: 0px 0px 60px 25px white;
 object-position: 50% 50%;
 `
 const LogoBox = styled.div`
+display: flex;
 align-items: center;
 align-content: center;
 justify-content: center;
 min-width: 30vw;
-min-height: 30vh;
-border-color: white;
-border-width: 5px;
+min-height: 20vh;
 `
