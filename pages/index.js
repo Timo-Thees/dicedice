@@ -16,14 +16,16 @@ export default function Home() {
             <Logo src="/dicedice_logo.png"/>
             <LogoGlow></LogoGlow>
           </LogoBox>
-      <Subheading>A TableTop RPG Helper</Subheading>
-      <button onClick={()=> setPage("genesys")}>Genesys Würfel</button>
-      <button onClick={()=> setPage("monster of the week")}>Monster of the Week</button>
-      <button onClick={()=> setPage("under construction")}>Dungeon World</button>
-      <button onClick={()=> setPage("oracle")}>Orakel</button>
-      <button onClick={()=> setPage("under construction")}>NPC Generator</button>
-      <button onClick={()=> setPage("under construction")}>Dungeon Generator</button>
-      </BackgroundHomescreen>) :(<></>)}
+          <Subheading>A TableTop RPG Helper</Subheading>
+          <StartMenue>
+            <Button onClick={()=> setPage("genesys")}>Genesys System</Button>
+            <Button onClick={()=> setPage("monster of the week")}>Monster of the Week</Button>
+            <Button onClick={()=> setPage("under construction")}>Dungeon World</Button>
+            <Button onClick={()=> setPage("oracle")}>Orakel</Button>
+            <Button onClick={()=> setPage("under construction")}>NPC Generator</Button>
+            <Button onClick={()=> setPage("under construction")}>Dungeon Generator</Button>
+          </StartMenue>
+        </BackgroundHomescreen>) :(<></>)}
       {page === "genesys" ? (<Genesys setPage={setPage}/>) : (<></>)}
       {page === "oracle" ? (<Oracle setPage={setPage}/>):(<></>)}
       {page === "monster of the week" ? (<MonsterOfTheWeek setPage={setPage}/>):(<></>)}
@@ -104,4 +106,32 @@ align-content: center;
 justify-content: center;
 min-width: 30vw;
 min-height: 20vh;
+`
+const animateStartMenue = keyframes`
+0% {top: 150vh}
+90% {top: 17vh}
+100% {top: 25vh}
+`
+
+const StartMenue = styled.div`
+background-color:rgba(255,255,255,0.4);
+border-radius: 0.75rem;
+display: flex;
+flex-direction: column;
+align-items: center;
+align-content: center;
+justify-content: center;
+z-index: 4;
+position: absolute;
+top: 25vh;
+max-width: 100%;
+width: 50vw;
+min-height: 50vh;
+padding: 20px;
+animation: ${animateStartMenue} 2s ease-in;
+animation-delay: 2.6s;
+animation-fill-mode: backwards;
+`
+
+const Button = styled.button`
 `
