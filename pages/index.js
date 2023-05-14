@@ -16,7 +16,7 @@ export default function Home() {
             <Logo src="/dicedice_logo.png"/>
             <LogoGlow></LogoGlow>
           </LogoBox>
-          <Subheading>A TableTop RPG Helper</Subheading>
+          <LogoSubheading>A TableTop RPG Helper</LogoSubheading>
           <StartMenue>
             <Button onClick={()=> setPage("genesys")}>Genesys System</Button>
             <Button onClick={()=> setPage("monster of the week")}>Monster of the Week</Button>
@@ -68,7 +68,6 @@ display: flex;
 flex-direction: column;
 align-items: center;
 align-content: center;
-justify-content: center;
 `
 
 const animateLogo = keyframes`
@@ -86,8 +85,16 @@ align-self: center;
 animation: ${animateLogo} 2s ease-in;
 animation-fill-mode: backwards;
 z-index: 2;
-object-position: 50% 50%;
+object-position: 25% 50%;
 `
+const LogoSubheading = styled.h3`
+text-align: center;
+color: white;
+animation: ${animateLogo} 1s ease-in;
+animation-delay: 2.5s;
+animation-fill-mode: backwards;
+`
+
 const LogoGlow = styled.div`
 position: absolute;
 width: 160px;
@@ -97,7 +104,7 @@ animation-delay: 1.5s;
 animation-fill-mode: backwards;
 background-color: white;
 box-shadow: 0px 0px 60px 25px white;
-object-position: 50% 50%;
+object-position: 25% 50%;
 `
 const LogoBox = styled.div`
 display: flex;
@@ -106,11 +113,14 @@ align-content: center;
 justify-content: center;
 min-width: 30vw;
 min-height: 20vh;
+margin-top: 10vh;
 `
 const animateStartMenue = keyframes`
 0% {top: 150vh}
-90% {top: 17vh}
-100% {top: 25vh}
+85% {top: 30vh}
+92% {top: 44vh}
+98% {top: 41vh}
+100% {top: 40vh}
 `
 
 const StartMenue = styled.div`
@@ -123,13 +133,13 @@ align-content: center;
 justify-content: center;
 z-index: 4;
 position: absolute;
-top: 25vh;
+top: 40vh;
 max-width: 100%;
 width: 50vw;
-min-height: 50vh;
+min-height: 30vh;
 padding: 20px;
-animation: ${animateStartMenue} 2s ease-in;
-animation-delay: 2.6s;
+animation: ${animateStartMenue} 1.5s linear;
+animation-delay: 3.6s;
 animation-fill-mode: backwards;
 `
 

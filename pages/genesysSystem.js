@@ -54,10 +54,6 @@ export default function Genesys({setPage}){
         return Math.floor(Math.random() * (max - min) + min)
     }
 
- /*   const srslyShutUpLinter = useCallback(()=>{
-        return(changeDiceText())
-    }, [changeDiceText])*/
-
     useEffect(() => {
         function initiateDiceText(){
             setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length)])
@@ -68,7 +64,6 @@ export default function Genesys({setPage}){
     function changeDiceText(){
         setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length)])
     }
-
 
     return(
         <div>

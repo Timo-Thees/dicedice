@@ -28,5 +28,6 @@ export const diceButtonTextArray = [
     "Whats the worst that could happen?",
     "*chuckles* I'm in danger!",
     "*nervous chuckle*",
-    "Oh. Oh no."
+    "Oh. Oh no.",
+    "I'm shure it will be fiiiiiine"
 ]
