@@ -54,10 +54,6 @@ export default function Genesys({setPage}){
         return Math.floor(Math.random() * (max - min) + min)
     }
 
- /*   const srslyShutUpLinter = useCallback(()=>{
-        return(changeDiceText())
-    }, [changeDiceText])*/
-
     useEffect(() => {
         function initiateDiceText(){
             setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length)])
@@ -68,7 +64,6 @@ export default function Genesys({setPage}){
     function changeDiceText(){
         setDiceButtonText(diceButtonTextArray[getRandomInteger(0, diceButtonTextArray.length)])
     }
-
 
     return(
         <div>
@@ -293,7 +288,7 @@ const NegatedIcon = styled(NormalIcon)`
 position: relative;
 left: -25px;
 top: 0px;
-z-index: -2;
+z-index: 2;
 animation: animation: ${animatePositiveResult} 1s ease-in;
 animation-delay: ${props => (props.animationDelay -1)* 1 + props.secondDelay + 10}s;
 animation-fill-mode: backwards;
