@@ -4,6 +4,7 @@ import Genesys from "./genesysSystem";
 import Oracle from "./Oracle";
 import { useState } from "react";
 import MonsterOfTheWeek from "./MonsterOfTheWeek";
+import AnimationTest from "./animationTest"
 
 export default function Home() {
   const [page, setPage] = useState("home")
@@ -24,6 +25,7 @@ export default function Home() {
             <Button onClick={()=> setPage("oracle")}>Orakel</Button>
             <Button onClick={()=> setPage("under construction")}>NPC Generator</Button>
             <Button onClick={()=> setPage("under construction")}>Dungeon Generator</Button>
+            <Button onClick={()=> setPage("animation test")}>Animation Test</Button>
           </StartMenue>
         </BackgroundHomescreen>) :(<></>)}
       {page === "genesys" ? (<Genesys setPage={setPage}/>) : (<></>)}
@@ -36,6 +38,7 @@ export default function Home() {
       <button onClick={()=> setPage("home")}>Home</button>
         </div>
       ) : (<></>)}
+      {page === "animation test" ? (<AnimationTest setPage={setPage}/>) : (<></>)}
       </Background>
     </main>
   );
@@ -55,7 +58,7 @@ bottom: 0px;
 left: 0px;
 width: 100%;
 `
-const BackgroundHomescreen = styled.div`
+export const BackgroundHomescreen = styled.div`
 background-color: #28304B;
 height: 100%;
 position: fixed;
