@@ -289,7 +289,7 @@ position: relative;
 left: -25px;
 top: 0px;
 z-index: 2;
-animation: animation: ${animatePositiveResult} 1s ease-in;
+animation: ${animatePositiveResult} 1s ease-in;
 animation-delay: ${props => (props.animationDelay -1)* 1 + props.secondDelay + 10}s;
 animation-fill-mode: backwards;
 `
