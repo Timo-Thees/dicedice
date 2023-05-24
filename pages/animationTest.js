@@ -7,12 +7,8 @@ export default function AnimationTest({setPage}){
     const [diceNumber, setDiceNumber] = useState(1)
     const [diceColor, setDiceColor] = useState("red")
     const [diceAnimationArray, setDiceAnimationArray] = useState([])
-    const [countdown, setCountdown] = useState(10)
 
-    useEffect(() => {
-        diceAnimation();
-    }, [countdown])
-    
+
     function getRandomInteger(min, max){
         min = Math.ceil(min)
         max = Math.floor(max)
@@ -20,37 +16,33 @@ export default function AnimationTest({setPage}){
     }
 
     function diceAnimation(){
-        if (countdown>0){ 
-            const lastDice = diceAnimationArray.pop()
-            const arrayTemporaryStorage = [...diceAnimationArray]
-            if (diceAnimationArray.length === 0){
-                const whatDice = getRandomInteger(1, 7)
-                arrayTemporaryStorage.push({key: 1, diceNumber: whatDice})
-                setDiceAnimationArray([...arrayTemporaryStorage])
-                setCountdown(countdown -1)
-                console.log(countdown)
+        const temporaryArray = [];
+       let countdown = 10;
+        for(;countdown > 0;){
+            if(temporaryArray.length === 0){
+                temporaryArray.push({key: 1, animationDelay: 0, diceNumber: getRandomInteger(1, 7)})
+                countdown = countdown -1
+            } else {
+                const lastDice = temporaryArray.pop()
+                if (lastDice.diceNumber > 3){
+                    const newDice = {key: lastDice.key+1, animationDelay: lastDice.animationDelay +1, diceNumber: getRandomInteger(1, lastDice.diceNumber)}
+                    temporaryArray.push(lastDice)
+                    temporaryArray.push(newDice)
+                    countdown = countdown-1
+                } else {
+                    const newDice = {key: lastDice.key+1, animationDelay: lastDice.animationDelay +1, diceNumber: getRandomInteger(lastDice.diceNumber + 1, 7)}
+                    temporaryArray.push(lastDice)
+                    temporaryArray.push(newDice)
+                    countdown = countdown-1
+                }
+                
             }
-            else if (lastDice !== undefined && lastDice.diceNumber > 3){
-                const whatDice = getRandomInteger(1, lastDice.diceNumber)
-                arrayTemporaryStorage.push({key: lastDice.key +1, diceNumber: whatDice})
-                setDiceAnimationArray([...diceAnimationArray, ...arrayTemporaryStorage])
-                setCountdown(countdown -1)
-                console.log(countdown)
-            }
-            else if (lastDice !== undefined && lastDice.diceNumber < 4){
-                const whatDice = getRandomInteger(lastDice.diceNumber +1, 7)
-                arrayTemporaryStorage.push({key: lastDice.key +1, diceNumber: whatDice})
-                setDiceAnimationArray([...diceAnimationArray, ...arrayTemporaryStorage])
-                setCountdown(countdown -1)
-                console.log(countdown)
-            }} else {
-                console.log(diceAnimationArray)
-            }
-       
+        }
+        setDiceAnimationArray([...temporaryArray])
     }
     const handleTestAnimation = ()=>{
-        setCountdown(10);
         setDiceAnimationArray([])
+        diceAnimation()
     }
     return(
         <BackgroundAnimationTest>
@@ -61,7 +53,7 @@ export default function AnimationTest({setPage}){
                 <ButtonRow>
                     {diceAnimationArray.map(slide=>{
                         return(
-                            <RollingDiceBox key={slide.key} animationDelay={slide.key}>
+                            <RollingDiceBox key={slide.key} animationDelay={slide.animationDelay} >
                                 <DSixAll dice={slide.diceNumber} width={50} height={50} fill={diceColor}/>
                             </RollingDiceBox>)
                     })}
@@ -142,13 +134,15 @@ border-radius: 0.75rem;
 margin: 25px;
 `
 const rollingDiceAnimation = keyframes`
-0% {opacity: 0}
-1% {opacity: 1}
-99% {opacity: 1}
-100% {opacity: 0}
+0% {background-color: blue;}
+1% {background-color: red;}
+99% {background-color: red;}
+100% {background-color: yellow;}
 `
 
 const RollingDiceBox = styled.div`
-animation: ${rollingDiceAnimation} 0.5s linear;
-animation-delay: ${props => props.animationDelay}*0.5s
+animation: ${props => resultGlowupKeyframes(props.fill)} 2s ease-out;
+animation-delay: ${props => props.animationDelay*0.5}s
+animation-fill-mode: forwards;
 `
+//animation-delay: ${props => (props.animationDelay -1)* 1 + props.secondDelay + 10}s;
