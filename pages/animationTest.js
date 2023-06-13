@@ -48,7 +48,7 @@ export default function AnimationTest({setPage}){
         <BackgroundAnimationTest>
             <Dialog>
                 <ResultGlowupBox fill={diceColor}>
-                    <DSixAll dice={diceNumber} width={50} height={50} fill={diceColor}/>
+                    <DSixAllAnimated dice={diceNumber} width={50} height={50} fill={diceColor}/>
                 </ResultGlowupBox>            
                 <ButtonRow>
                     {diceAnimationArray.map(slide=>{
@@ -141,6 +141,12 @@ const rollingDiceAnimation = keyframes`
 `
 
 const RollingDiceBox = styled.div`
+animation: ${props => resultGlowupKeyframes(props.fill)} 2s ease-out;
+animation-delay: ${props => props.animationDelay*0.5}s
+animation-fill-mode: forwards;
+`
+
+const DSixAllAnimated = styled(DSixAll)`
 animation: ${props => resultGlowupKeyframes(props.fill)} 2s ease-out;
 animation-delay: ${props => props.animationDelay*0.5}s
 animation-fill-mode: forwards;
