@@ -4,6 +4,7 @@ import Genesys from "./genesysSystem";
 import Oracle from "./Oracle";
 import { useState, useEffect } from "react";
 import MonsterOfTheWeek from "./MonsterOfTheWeek";
+import { Button, Subheading } from "../components/designElements";
 
 export default function Home() {
   const [page, setPage] = useState("home")
@@ -14,8 +15,7 @@ export default function Home() {
   } ,[])
 
   return (
-    <main>
-      <Background>
+    <Main>
       {page === "home" ? (
         <BackgroundHomescreen>
           {openingAnimation === true ? (
@@ -63,29 +63,29 @@ export default function Home() {
       <button onClick={()=> setPage("home")}>Home</button>
         </div>
       ) : (<></>)}
-      </Background>
-    </main>
+    </Main>
   );
 }
 
-export const Subheading = styled.h3`
-  text-align: center;
-  color: white;
-`;
-
-const Background = styled.div`
+const Main = styled.main`
 background-color: #28304B;
-height: 100%;
+margin: 0;
+padding: 0;
+min-height: 100vh;
+min-width: 100vw;
 top: 0px;
-right: 0px;
-bottom: 0px;
-left: 0px;
-width: 100%;
 `
-const BackgroundHomescreen = styled.div`
+/* const Background = styled.div`
 background-color: #28304B;
+margin: 0;
+padding: 0;
+min-height: 100vh;
+min-width: 100vw;
+top: 0px;
+`*/
+
+const BackgroundHomescreen = styled.div`
 height: 100%;
-position: fixed;
 top: 0px;
 right: 0px;
 bottom: 0px;
@@ -193,5 +193,3 @@ animation-delay: 3.6s;
 animation-fill-mode: backwards;
 `
 
-const Button = styled.button`
-`

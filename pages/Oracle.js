@@ -1,7 +1,8 @@
 import Heading from "../components/Heading";
-import { Subheading } from ".";
+import { Subheading } from "../components/designElements";
 import { useState } from "react";
 import { fatesTableArray } from "../components/fatesTable";
+import styled from "styled-components";
 
 export default function Oracle({setPage}){
     const [yesOrNo, setYesOrNo] = useState("Yes or No?")
@@ -51,6 +52,13 @@ export default function Oracle({setPage}){
             <Subheading>{theFates}</Subheading>
             <button onClick={handleAskTheFates}>Ask the Fates</button>
             <button onClick={() => setPage("home")}>Home</button>
+            <Testblock/>
         </div>
     )
 }
+
+const Testblock = styled.div`
+width: 20vw;
+height: 100vh;
+background-color: yellow;
+`
