@@ -70,30 +70,46 @@ export default function Genesys({setPage}){
         <div>
         <StatsEntry onSubmit={rollDice}>
             <OuterFlexbox>
-            <InnerFlexbox>
-            <h4>boni</h4>
-            <FUImage width={30} src="/yellow_dice.png" alt="yellow d12"/>
-            <p>Gelb</p>
-            <input type="number" min="0" placeholder="0" name="yellow"></input>
-            <FUImage width={25} src="/green_dice.png" alt="green d8"/>
-            <p>Grün</p>
-            <input type="number" min="0" placeholder="0" name="green"></input>
-            <FUImage width={25} src="/blue_dice.png" alt="blue d6"/>
-            <p>Blau</p>
-            <input type="number" min="0" placeholder="0" name="blue"></input>
-            </InnerFlexbox>
-            <InnerFlexbox>
-            <h4>mali</h4>
-            <FUImage width={30} src="/red_dice.png" alt="red d12"/>
-            <p>Rot</p>
-            <input type="number" min="0" placeholder="0" name="red"></input>
-            <FUImage width={25} src="/purple_dice.png" alt="purple d8"/>
-            <p>Lila</p>
-            <input type="number" min="0" placeholder="0" name="purple"></input>
-            <FUImage width={25} src="/black_dice.png" alt="black d6"/>
-            <p>Schwarz</p>
-            <input type="number" min="0" placeholder="0" name="black"></input>
-            </InnerFlexbox>
+                <InnerFlexbox>
+                    <h4>Boni</h4>
+                    <DiceFormWrapper>
+                        <InnerFlexbox>
+                            <FUImage width={30} src="/yellow_dice.png" alt="yellow d12"/>
+                            <p>Gelb</p>
+                            <input type="number" min="0" placeholder="0" name="yellow"></input>
+                        </InnerFlexbox>
+                        <InnerFlexbox>
+                            <FUImage width={25} src="/green_dice.png" alt="green d8"/>
+                            <p>Grün</p>
+                            <input type="number" min="0" placeholder="0" name="green"></input>
+                        </InnerFlexbox>
+                        <InnerFlexbox>
+                            <FUImage width={25} src="/blue_dice.png" alt="blue d6"/>
+                            <p>Blau</p>
+                            <input type="number" min="0" placeholder="0" name="blue"></input>
+                        </InnerFlexbox>
+                    </DiceFormWrapper>
+                </InnerFlexbox>
+                <InnerFlexbox>
+                    <h4>Mali</h4>
+                    <DiceFormWrapper>
+                        <InnerFlexbox>
+                            <FUImage width={30} src="/red_dice.png" alt="red d12"/>
+                            <p>Rot</p>
+                            <input type="number" min="0" placeholder="0" name="red"></input>
+                        </InnerFlexbox>
+                        <InnerFlexbox>
+                            <FUImage width={25} src="/purple_dice.png" alt="purple d8"/>
+                            <p>Lila</p>
+                            <input type="number" min="0" placeholder="0" name="purple"></input>
+                        </InnerFlexbox>
+                        <InnerFlexbox>
+                            <FUImage width={25} src="/black_dice.png" alt="black d6"/>
+                            <p>Schwarz</p>
+                            <input type="number" min="0" placeholder="0" name="black"></input>
+                        </InnerFlexbox>
+                    </DiceFormWrapper>
+                </InnerFlexbox>
             </OuterFlexbox>
             <button type="submit">{diceButtonText}</button>
         </StatsEntry>
@@ -233,15 +249,19 @@ export default function Genesys({setPage}){
 }
 
 const StatsEntry = styled.form`
-background-color: grey;
+background-color:rgba(255,255,255,0.4);
 display: flex;
 flex-direction: column;
 align-items: center;
+margin: 20px;
+padding: 20px;
+border-radius: 20px;
 `;
 
 const OuterFlexbox = styled.div`
 display: flex;
 flex-direction: row;
+margin-bottom: 10px;
 `;
 
 const InnerFlexbox = styled.div`
@@ -249,7 +269,15 @@ display: flex;
 flex-direction: column;
 text-align: center;
 align-items: center;
+margin: 5px;
+margin-bottom: 10px;
 `;
+
+const DiceFormWrapper = styled(InnerFlexbox)`
+background-color:rgba(255,255,255,0.4);
+border-radius: 20px;
+padding: 8px;
+`
 
 const ResultsContainer = styled.div`
 background-color: lightgrey;
