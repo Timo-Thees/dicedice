@@ -9,4 +9,5 @@ export const Subheading = styled.h3`
 `
 export const FUImage = styled.img`
 max-widh: 30px;
+align-contetn: center;
 `
