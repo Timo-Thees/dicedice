@@ -2,6 +2,8 @@ import styled, { keyframes } from "styled-components"
 import { useState, useEffect, useCallback } from "react";
 import { diceButtonTextArray } from "../components/diceButtonText";
 import {rollResults} from "../components/rollResults";
+import { FUImage } from "../components/designElements";
+import GenesysResultOverlay from "../components/genesysResultOverlay";
 
 export default function Genesys({setPage}){
     const [dice, setDice] = useState({yellow: 0, green: 0, blue: 0, red: 0, purple: 0, black: 0})
@@ -15,7 +17,8 @@ export default function Genesys({setPage}){
     const [animationDelaySuccesses, setAnimationDelaySuccesses] = useState(0)
     const [diceButtonText, setDiceButtonText] = useState("Klick to roll dice")
     const [resultOverlay, setResultOverlay] = useState(false)
-
+    const [testcase, setTestcase] = useState(false)
+    
     const shutUpLinter = useCallback(()=> {
         return(
             [advantage, disadvantage, successes, failure, triumphs, disaster]
@@ -35,7 +38,12 @@ export default function Genesys({setPage}){
     const red = (event.target.red.value === ""? 0 : event.target.red.value * 1)
     const purple = (event.target.purple.value === ""? 0 : event.target.purple.value * 1)
     const black = (event.target.black.value === ""? 0 : event.target.black.value * 1)
+        changeDiceText();
         setDice({yellow: yellow, green: green, blue: blue, red: red, purple: purple, black: black});
+        setResultOverlay(true);
+    }
+
+    function resetDice(){
         setTriumphs([]);
         setSuccesses([]);
         setAdvantage([]);
@@ -44,8 +52,6 @@ export default function Genesys({setPage}){
         setDisaster([]);
         setAnimationDelaySuccesses(0);
         setAnimationDelayAdvantages(0);
-        changeDiceText();
-        setResultOverlay(true);
     }
 
     function getRandomInteger(min, max){
@@ -69,178 +75,163 @@ export default function Genesys({setPage}){
         <div>
         <StatsEntry onSubmit={rollDice}>
             <OuterFlexbox>
-            <InnerFlexbox>
-            <h4>boni</h4>
-            <FUImage width={30} src="/yellow_dice.png" alt="yellow d12"/>
-            <p>Gelb</p>
-            <input type="number" min="0" placeholder="0" name="yellow"></input>
-            <FUImage width={25} src="/green_dice.png" alt="green d8"/>
-            <p>Grün</p>
-            <input type="number" min="0" placeholder="0" name="green"></input>
-            <FUImage width={25} src="/blue_dice.png" alt="blue d6"/>
-            <p>Blau</p>
-            <input type="number" min="0" placeholder="0" name="blue"></input>
-            </InnerFlexbox>
-            <InnerFlexbox>
-            <h4>mali</h4>
-            <FUImage width={30} src="/red_dice.png" alt="red d12"/>
-            <p>Rot</p>
-            <input type="number" min="0" placeholder="0" name="red"></input>
-            <FUImage width={25} src="/purple_dice.png" alt="purple d8"/>
-            <p>Lila</p>
-            <input type="number" min="0" placeholder="0" name="purple"></input>
-            <FUImage width={25} src="/black_dice.png" alt="black d6"/>
-            <p>Schwarz</p>
-            <input type="number" min="0" placeholder="0" name="black"></input>
-            </InnerFlexbox>
+                <InnerFlexbox>
+                    <h4>Boni</h4>
+                    <DiceFormWrapper>
+                        <InnerFlexbox>
+                            <FUImage width={30} src="/yellow_dice.png" alt="yellow d12"/>
+                            <p>Gelb</p>
+                            <input type="number" min="0" placeholder="0" name="yellow"></input>
+                        </InnerFlexbox>
+                        <InnerFlexbox>
+                            <FUImage width={25} src="/green_dice.png" alt="green d8"/>
+                            <p>Grün</p>
+                            <input type="number" min="0" placeholder="0" name="green"></input>
+                        </InnerFlexbox>
+                        <InnerFlexbox>
+                            <FUImage width={25} src="/blue_dice.png" alt="blue d6"/>
+                            <p>Blau</p>
+                            <input type="number" min="0" placeholder="0" name="blue"></input>
+                        </InnerFlexbox>
+                    </DiceFormWrapper>
+                </InnerFlexbox>
+                <InnerFlexbox>
+                    <h4>Mali</h4>
+                    <DiceFormWrapper>
+                        <InnerFlexbox>
+                            <FUImage width={30} src="/red_dice.png" alt="red d12"/>
+                            <p>Rot</p>
+                            <input type="number" min="0" placeholder="0" name="red"></input>
+                        </InnerFlexbox>
+                        <InnerFlexbox>
+                            <FUImage width={25} src="/purple_dice.png" alt="purple d8"/>
+                            <p>Lila</p>
+                            <input type="number" min="0" placeholder="0" name="purple"></input>
+                        </InnerFlexbox>
+                        <InnerFlexbox>
+                            <FUImage width={25} src="/black_dice.png" alt="black d6"/>
+                            <p>Schwarz</p>
+                            <input type="number" min="0" placeholder="0" name="black"></input>
+                        </InnerFlexbox>
+                    </DiceFormWrapper>
+                </InnerFlexbox>
             </OuterFlexbox>
-            <button type="submit">{diceButtonText}</button>
+            <button onClick={()=> resetDice()}>{diceButtonText}</button>
+
         </StatsEntry>
-        <button onClick={()=>setPage("home")}>Home</button>
-        <ResultsContainer>
-        <ResultsRow>
-            <p>Chanchen</p>
-            {advantage.map(result => {
-                if(result.negated === true){
-                return(
-                    <ShowResults
-                    key={result.key}
-                    animationDelay={result.key}
-                    secondDelay={0}
-                    >
-                        <NormalIcon src="/chance.png"/>
-                        <NegatedIcon animationDelay={result.key} secondDelay={0} src="/chance-neutralised.png" alt="Advantage was neutralised" />
-                    </ShowResults>
-                    
-                )
-                } else {
-                return(
-                    <ShowResults 
-                        key={result.key}
-                        animationDelay={result.key} 
-                        secondDelay={0}
-                        >
-                         <NormalIcon src="/chance.png" alt="Advantage" />
-                    </ShowResults>
-                )    
-                }
-            })}
-        </ResultsRow>
-        <ResultsRow>
-            <p>Bedrohungen</p>
-            {disadvantage.map(result => {
-                if(result.negated === true){
-                return(
-                    <ShowResults
-                    key={result.key}
-                    animationDelay={result.key}
-                    secondDelay={0.3}>
-                    <FUImage width={25} key={result.key} src="/bedrohung-neutralised.png" alt="Disadvantage was neutralised" />
-                    </ShowResults>
-                    
-                )
-                } else {
-                return(
-                    <ShowResults 
-                    key={result.key}
-                    animationDelay={result.key} 
-                    secondDelay={0}>
-                    <FUImage width={25} src="/bedrohung.png" alt="disadvantae" />
-                    </ShowResults>
-                )    
-                }
-            })}
-        </ResultsRow>
-        <ResultsRow>
-            <p>Erfolge</p>
-            {successes.map(result => {
-                if(result.negated === true){
-                return(
-                    <ShowResults
-                    key={result.key}
-                    animationDelay={result.key}
-                    secondDelay={animationDelayAdvantages + 1}>
-                    <FUImage width={25} src="/erfolg-neutralised.png" alt="Success was neutralised" />
-                    </ShowResults>
-                    
-                )
-                } else {
-                return(
-                    <ShowResults 
-                    key={result.key}
-                    animationDelay={result.key}
-                    secondDelay={animationDelayAdvantages + 1}>
-                    <FUImage width={25} src="/erfolg.png" alt="Success" />
-                    </ShowResults>
-                )    
-                }
-            })}
-        </ResultsRow>
-        <ResultsRow>
-            <p>Misserfolge</p>
-            {failure.map(result => {
-                if(result.negated === true){
-                return(
-                    <ShowResults
-                    key={result.key}
-                    animationDelay={result.key}
-                    secondDelay={animationDelayAdvantages + 1.3}>
-                    <FUImage width={25} src="/misserfolg-neutralised.png" alt="Failure was neutralised" />
-                    </ShowResults>
-                    
-                )
-                } else {
-                return(
-                    <ShowResults 
-                    key={result.key}
-                    animationDelay={result.key} 
-                     secondDelay={animationDelayAdvantages +1 }>
-                    <FUImage width={25} src="/misserfolg.png" alt="Failure" />
-                    </ShowResults>
-                )    
-                }
-            })}
-        </ResultsRow>
-        <ResultsRow>
-            <p>Katastrophen</p>
-            {disaster.map(result => {
-                return(
-                    <ShowResults 
-                    key={result.key}
-                    animationDelay={result.key} 
-                    secondDelay={animationDelayAdvantages + animationDelaySuccesses +2}
-                    >
-                    <FUImage width={30} src="/katastrophe.png" alt="Disaster!" />
-                    </ShowResults>
-                )
-            })}
-        </ResultsRow>
-        <ResultsRow>
-            <p>Triumphe</p>
-            {triumphs.map(result => {
-              {return(
-                    <ShowResults animationDelay={result.key} key={result.key} 
-                    secondDelay={animationDelayAdvantages + animationDelaySuccesses + disaster.length +2}>
-                    <FUImage width={30} src="/triumph.png" alt="Triumph!" />
-                    </ShowResults>
-                )}
-            })}
-        </ResultsRow>
-        </ResultsContainer>
+       
+        {resultOverlay===true ? <GenesysResultOverlay 
+        setResultOverlay={setResultOverlay} advantage={advantage} disadvantage={disadvantage} successes={successes} failure={failure} triumphs={triumphs} disaster={disaster} animationDelayAdvantages={animationDelayAdvantages} animationDelaySuccesses={animationDelaySuccesses}/> : 
+        <LastResultsOuterBox>
+            <LastResultInnerBox>
+                {advantage.map(result => {
+                        if(result.negated === false){
+                        return(
+                            <ShowResults 
+                                key={result.key}
+                                animationDelay={0} 
+                                secondDelay={0}
+                                >
+                                <NormalIcon src="/chance.png" alt="Advantage" />
+                            </ShowResults>
+                        )    
+                        }
+                    })}
+            </LastResultInnerBox>
+            <LastResultInnerBox>
+                {disadvantage.map(result => {
+                        if(result.negated === false){
+                        return(
+                            <ShowResults 
+                                key={result.key}
+                                animationDelay={0} 
+                                secondDelay={0}
+                                >
+                                <NormalIcon src="/bedrohung.png" alt="Danger" />
+                            </ShowResults>
+                        )    
+                        }
+                    })}
+            </LastResultInnerBox>
+            <LastResultInnerBox>
+                {successes.map(result => {
+                        if(result.negated === false){
+                        return(
+                            <ShowResults 
+                                key={result.key}
+                                animationDelay={0} 
+                                secondDelay={0}
+                                >
+                                <NormalIcon src="/erfolg.png" alt="Success" />
+                            </ShowResults>
+                        )    
+                        }
+                    })}
+            </LastResultInnerBox>
+            <LastResultInnerBox>
+                {failure.map(result => {
+                        if(result.negated === false){
+                        return(
+                            <ShowResults 
+                                key={result.key}
+                                animationDelay={0} 
+                                secondDelay={0}
+                                >
+                                <NormalIcon src="/misserfolg.png" alt="Failure" />
+                            </ShowResults>
+                        )    
+                        }
+                    })}
+            </LastResultInnerBox>
+            <LastResultInnerBox>
+                {triumphs.map(result => {
+                        return(
+                            <ShowResults 
+                                key={result.key}
+                                animationDelay={0} 
+                                secondDelay={0}
+                                >
+                                <NormalIcon src="/triumph.png" alt="Triumph" />
+                            </ShowResults>
+                        )    
+                        }
+                    )}
+            </LastResultInnerBox>
+            <LastResultInnerBox>
+                {disaster.map(result => {
+                        return(
+                            <ShowResults 
+                                key={result.key}
+                                animationDelay={0} 
+                                secondDelay={0}
+                                >
+                                <NormalIcon src="/katastrophe.png" alt="disaster" />
+                            </ShowResults>
+                        )    
+                        
+                    })}
+            </LastResultInnerBox>
+            <button onClick={()=>setPage("home")}>Home</button>
+        </LastResultsOuterBox>
+        }
         </div>
     )
 }
 
 const StatsEntry = styled.form`
-background-color: grey;
+background-color:rgba(255,255,255,0.4);
 display: flex;
 flex-direction: column;
 align-items: center;
+margin: 20px;
+padding: 20px;
+border-radius: 20px;
 `;
 
 const OuterFlexbox = styled.div`
 display: flex;
 flex-direction: row;
+margin-bottom: 10px;
 `;
 
 const InnerFlexbox = styled.div`
@@ -248,7 +239,29 @@ display: flex;
 flex-direction: column;
 text-align: center;
 align-items: center;
+margin: 5px;
+margin-bottom: 10px;
 `;
+
+const DiceFormWrapper = styled(InnerFlexbox)`
+background-color:rgba(255,255,255,0.4);
+border-radius: 20px;
+padding: 8px;
+`
+
+const LastResultsOuterBox = styled.div`
+background-color:rgba(255,255,255,0.4);
+display: flex;
+flex-direction: column;
+align-items: center;
+margin: 20px;
+padding: 20px;
+border-radius: 20px;
+`
+const LastResultInnerBox = styled.div`
+display: flex;
+flex-direction: row;
+`
 
 const ResultsContainer = styled.div`
 background-color: lightgrey;
@@ -293,8 +306,6 @@ animation: animation: ${animatePositiveResult} 1s ease-in;
 animation-delay: ${props => (props.animationDelay -1)* 1 + props.secondDelay + 10}s;
 animation-fill-mode: backwards;
 `
-const FUImage = styled.img`
-max-widh: 30px;
-`
+
 
 //

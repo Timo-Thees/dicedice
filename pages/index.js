@@ -2,29 +2,77 @@ import Heading from "../components/Heading";
 import styled, { keyframes } from "styled-components";
 import Genesys from "./genesysSystem";
 import Oracle from "./Oracle";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MonsterOfTheWeek from "./MonsterOfTheWeek";
+import { Button, Subheading } from "../components/designElements";
 
 export default function Home() {
   const [page, setPage] = useState("home")
+  const [startMenue, setStartMenue] = useState("finished")
+  const [openingAnimation, setOpeningAnimation] = useState(true)
+
+  useEffect(()=>{
+    setTimeout(()=>{setOpeningAnimation(false)},5000)
+  } ,[])
+
   return (
-    <main>
-      <Background>
-      {page === "home" ? (      
+    <Main>
+      {page === "home" ? (
         <BackgroundHomescreen>
-          <LogoBox>      
-            <Logo src="/dicedice_logo.png"/>
-            <LogoGlow></LogoGlow>
-          </LogoBox>
-          <LogoSubheading>A TableTop RPG Helper</LogoSubheading>
-          <StartMenue>
-            <Button onClick={()=> setPage("genesys")}>Genesys System</Button>
-            <Button onClick={()=> setPage("monster of the week")}>Monster of the Week</Button>
-            <Button onClick={()=> setPage("under construction")}>Dungeon World</Button>
-            <Button onClick={()=> setPage("oracle")}>Orakel</Button>
-            <Button onClick={()=> setPage("under construction")}>NPC Generator</Button>
-            <Button onClick={()=> setPage("under construction")}>Dungeon Generator</Button>
-          </StartMenue>
+          {openingAnimation === true ? (
+            <ClickToStopAnimation onClick={()=>setOpeningAnimation(false)}>
+            <LogoBox>      
+              <LogoAnimated src="/dicedice_logo.png" />
+              <LogoGlowAnimated />
+            </LogoBox>
+            <LogoSubheadingAnimated>A TableTop RPG Helper</LogoSubheadingAnimated>
+            <StartMenueAnimated>
+              {startMenue === "finished" ? (
+                <ButtonBox>
+                <Button onClick={()=> setPage("genesys")}>Genesys System</Button>
+                <Button onClick={()=> setStartMenue("unfinished")}>Show Unfinished Projects</Button>
+                </ButtonBox>
+              ) : (
+                <ButtonBox>
+                <Button onClick={()=> setPage("monster of the week")}>Monster of the Week</Button>
+                <Button onClick={()=> setPage("under construction")}>Dungeon World</Button>
+                <Button onClick={()=> setPage("oracle")}>Orakel</Button>
+                <Button onClick={()=> setPage("under construction")}>NPC Generator</Button>
+                <Button onClick={()=> setPage("under construction")}>Dungeon Generator</Button>
+                <Button onClick={()=> setStartMenue("finished")}>return</Button>
+                </ButtonBox>
+              )}
+              
+
+            </StartMenueAnimated>
+            </ClickToStopAnimation>
+           ) : (
+            <div>
+            <LogoBox>      
+              <Logo src="/dicedice_logo.png" />
+              <LogoGlow ></LogoGlow>
+            </LogoBox>
+            <LogoSubheading>A TableTop RPG Helper</LogoSubheading>
+            <StartMenue>
+            {startMenue === "finished" ? (
+                <ButtonBox>
+                <Button onClick={()=> setPage("genesys")}>Genesys System</Button>
+                <Button onClick={()=> setStartMenue("unfinished")}>Show Unfinished Projects</Button>
+                </ButtonBox>
+              ) : (
+                <ButtonBox>
+                <Button onClick={()=> setPage("monster of the week")}>Monster of the Week</Button>
+                <Button onClick={()=> setPage("under construction")}>Dungeon World</Button>
+                <Button onClick={()=> setPage("oracle")}>Orakel</Button>
+                <Button onClick={()=> setPage("under construction")}>NPC Generator</Button>
+                <Button onClick={()=> setPage("under construction")}>Dungeon Generator</Button>
+                <Button onClick={()=> setStartMenue("finished")}>return</Button>
+                </ButtonBox>
+              )}
+            </StartMenue>
+            </div>
+           )}
+
         </BackgroundHomescreen>) :(<></>)}
       {page === "genesys" ? (<Genesys setPage={setPage}/>) : (<></>)}
       {page === "oracle" ? (<Oracle setPage={setPage}/>):(<></>)}
@@ -36,29 +84,34 @@ export default function Home() {
       <button onClick={()=> setPage("home")}>Home</button>
         </div>
       ) : (<></>)}
-      </Background>
-    </main>
+    </Main>
   );
 }
 
-export const Subheading = styled.h3`
-  text-align: center;
-  color: white;
-`;
-
-const Background = styled.div`
+const Main = styled.main`
 background-color: #28304B;
-height: 100%;
+margin: 0;
+padding: 0;
+min-height: 100vh;
+min-width: 100vw;
 top: 0px;
-right: 0px;
-bottom: 0px;
-left: 0px;
-width: 100%;
+padding-top: 5;
+display: flex;
+flex-direction: column;
+align-items: center;
+align-content: center;
 `
-const BackgroundHomescreen = styled.div`
+/* const Background = styled.div`
 background-color: #28304B;
+margin: 0;
+padding: 0;
+min-height: 100vh;
+min-width: 100vw;
+top: 0px;
+`*/
+
+const BackgroundHomescreen = styled.div`
 height: 100%;
-position: fixed;
 top: 0px;
 right: 0px;
 bottom: 0px;
@@ -68,6 +121,16 @@ display: flex;
 flex-direction: column;
 align-items: center;
 align-content: center;
+`
+
+const ClickToStopAnimation = styled.div`
+height: 100%;
+position: fixed;
+top: 0px;
+right: 0px;
+bottom: 0px;
+left: 0px;
+width: 100%;
 `
 
 const animateLogo = keyframes`
@@ -82,14 +145,19 @@ to {
 const Logo = styled.img`
 position: absolute;
 align-self: center;
-animation: ${animateLogo} 2s ease-in;
-animation-fill-mode: backwards;
 z-index: 2;
 object-position: 25% 50%;
 `
+const LogoAnimated = styled(Logo)`
+animation: ${animateLogo} 2s ease-in;
+animation-fill-mode: backwards;
+`
+
 const LogoSubheading = styled.h3`
 text-align: center;
 color: white;
+`
+const LogoSubheadingAnimated = styled(LogoSubheading)`
 animation: ${animateLogo} 1s ease-in;
 animation-delay: 2.5s;
 animation-fill-mode: backwards;
@@ -99,13 +167,17 @@ const LogoGlow = styled.div`
 position: absolute;
 width: 160px;
 height: 30px;
-animation: ${animateLogo} 0.8s ease-in;
-animation-delay: 1.5s;
-animation-fill-mode: backwards;
 background-color: white;
 box-shadow: 0px 0px 60px 25px white;
 object-position: 25% 50%;
 `
+
+const LogoGlowAnimated = styled(LogoGlow)`
+animation: ${animateLogo} 0.8s ease-in;
+animation-delay: 1.5s;
+animation-fill-mode: backwards;
+`
+
 const LogoBox = styled.div`
 display: flex;
 align-items: center;
@@ -115,6 +187,7 @@ min-width: 30vw;
 min-height: 20vh;
 margin-top: 10vh;
 `
+
 const animateStartMenue = keyframes`
 0% {top: 150vh}
 85% {top: 30vh}
@@ -134,14 +207,21 @@ justify-content: center;
 z-index: 4;
 position: absolute;
 top: 40vh;
+left: 25vw;
 max-width: 100%;
 width: 50vw;
 min-height: 30vh;
 padding: 20px;
+`
+const StartMenueAnimated = styled(StartMenue)`
 animation: ${animateStartMenue} 1.5s linear;
 animation-delay: 3.6s;
 animation-fill-mode: backwards;
 `
-
-const Button = styled.button`
+const ButtonBox = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+align-content: center;
+justify-content: center;
 `
