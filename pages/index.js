@@ -8,6 +8,7 @@ import { Button, Subheading } from "../components/designElements";
 
 export default function Home() {
   const [page, setPage] = useState("home")
+  const [startMenue, setStartMenue] = useState("finished")
   const [openingAnimation, setOpeningAnimation] = useState(true)
 
   useEffect(()=>{
@@ -26,12 +27,23 @@ export default function Home() {
             </LogoBox>
             <LogoSubheadingAnimated>A TableTop RPG Helper</LogoSubheadingAnimated>
             <StartMenueAnimated>
-              <Button onClick={()=> setPage("genesys")}>Genesys System</Button>
-              <Button onClick={()=> setPage("monster of the week")}>Monster of the Week</Button>
-              <Button onClick={()=> setPage("under construction")}>Dungeon World</Button>
-              <Button onClick={()=> setPage("oracle")}>Orakel</Button>
-              <Button onClick={()=> setPage("under construction")}>NPC Generator</Button>
-              <Button onClick={()=> setPage("under construction")}>Dungeon Generator</Button>
+              {startMenue === "finished" ? (
+                <ButtonBox>
+                <Button onClick={()=> setPage("genesys")}>Genesys System</Button>
+                <Button onClick={()=> setStartMenue("unfinished")}>Show Unfinished Projects</Button>
+                </ButtonBox>
+              ) : (
+                <ButtonBox>
+                <Button onClick={()=> setPage("monster of the week")}>Monster of the Week</Button>
+                <Button onClick={()=> setPage("under construction")}>Dungeon World</Button>
+                <Button onClick={()=> setPage("oracle")}>Orakel</Button>
+                <Button onClick={()=> setPage("under construction")}>NPC Generator</Button>
+                <Button onClick={()=> setPage("under construction")}>Dungeon Generator</Button>
+                <Button onClick={()=> setStartMenue("finished")}>return</Button>
+                </ButtonBox>
+              )}
+              
+
             </StartMenueAnimated>
             </ClickToStopAnimation>
            ) : (
@@ -42,12 +54,21 @@ export default function Home() {
             </LogoBox>
             <LogoSubheading>A TableTop RPG Helper</LogoSubheading>
             <StartMenue>
-              <Button onClick={()=> setPage("genesys")}>Genesys System</Button>
-              <Button onClick={()=> setPage("monster of the week")}>Monster of the Week</Button>
-              <Button onClick={()=> setPage("under construction")}>Dungeon World</Button>
-              <Button onClick={()=> setPage("oracle")}>Orakel</Button>
-              <Button onClick={()=> setPage("under construction")}>NPC Generator</Button>
-              <Button onClick={()=> setPage("under construction")}>Dungeon Generator</Button>
+            {startMenue === "finished" ? (
+                <ButtonBox>
+                <Button onClick={()=> setPage("genesys")}>Genesys System</Button>
+                <Button onClick={()=> setStartMenue("unfinished")}>Show Unfinished Projects</Button>
+                </ButtonBox>
+              ) : (
+                <ButtonBox>
+                <Button onClick={()=> setPage("monster of the week")}>Monster of the Week</Button>
+                <Button onClick={()=> setPage("under construction")}>Dungeon World</Button>
+                <Button onClick={()=> setPage("oracle")}>Orakel</Button>
+                <Button onClick={()=> setPage("under construction")}>NPC Generator</Button>
+                <Button onClick={()=> setPage("under construction")}>Dungeon Generator</Button>
+                <Button onClick={()=> setStartMenue("finished")}>return</Button>
+                </ButtonBox>
+              )}
             </StartMenue>
             </div>
            )}
@@ -197,4 +218,10 @@ animation: ${animateStartMenue} 1.5s linear;
 animation-delay: 3.6s;
 animation-fill-mode: backwards;
 `
-
+const ButtonBox = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+align-content: center;
+justify-content: center;
+`
